@@ -8,5 +8,5 @@ In today's world POSIX threads (pthreads) are mature as well accepted.  SPLASH-2
 ##Goals
 1. Migrate SPLASH-2 apps and kernels to gcc with POSIX.
 2. Address all warnings from gcc.
-3. Add compatibility with other compilers (clange/icc.)
+3. Add compatibility with other compilers (clang+LLVM/icc.)
 4. Increase computation capability to match current architectures.
