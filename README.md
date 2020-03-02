@@ -10,3 +10,4 @@ In today's world POSIX threads (pthreads) are mature as well accepted.  SPLASH-2
 2. Address all warnings from gcc.
 3. Add compatibility with other compilers (clang+LLVM/icc.)
 4. Increase computation capability to match current architectures.
+5. Put kernels through intense static code analysis (clang-tidy/cppcheck)
