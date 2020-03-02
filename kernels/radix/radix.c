@@ -406,10 +406,10 @@ int main(int argc, char *argv[])
    max_num_digits = get_max_digits(max_key);
    printf("\n");
    printf("Integer Radix Sort\n");
-   printf("     %ld Keys\n",num_keys);
-   printf("     %ld Processors\n",number_of_processors);
-   printf("     Radix = %ld\n",radix);
-   printf("     Max key = %ld\n",max_key);
+   printf("     %d Keys\n",num_keys);
+   printf("     %d Processors\n",number_of_processors);
+   printf("     Radix = %d\n",radix);
+   printf("     Max key = %d\n",max_key);
    printf("\n");
 
    quotient = num_keys / number_of_processors;
@@ -561,7 +561,7 @@ int main(int argc, char *argv[])
      avgrank = avgrank / number_of_processors;
      avgsort = avgsort / number_of_processors;
      for (i=1; i<number_of_processors; i++) {
-       printf("  %3ld     %10.0f      %10.0f      %10.0f\n",
+       printf("  %3d     %10.0f      %10.0f      %10.0f\n",
                i,global->totaltime[i],global->ranktime[i],
                global->sorttime[i]);
      }
@@ -574,15 +574,15 @@ int main(int argc, char *argv[])
    printf("\n");
    global->starttime = start;
    printf("                 TIMING INFORMATION\n");
-   printf("Start time                        : %16lu\n",
+   printf("Start time                        : %16u\n",
            global->starttime);
-   printf("Initialization finish time        : %16lu\n",
+   printf("Initialization finish time        : %16u\n",
            global->rs);
-   printf("Overall finish time               : %16lu\n",
+   printf("Overall finish time               : %16u\n",
            global->rf);
-   printf("Total time with initialization    : %16lu\n",
+   printf("Total time with initialization    : %16u\n",
            global->rf-global->starttime);
-   printf("Total time without initialization : %16lu\n",
+   printf("Total time without initialization : %16u\n",
            global->rf-global->rs);
    printf("\n");
 
@@ -657,6 +657,11 @@ void slave_sort()
    key_stop = key_partition[MyNum + 1];
    rank_start = rank_partition[MyNum];
    rank_stop = rank_partition[MyNum + 1];
+
+   if (rank_start == radix) {
+       printf("WARNING: rank_start == radix!\n");
+   }
+
    if (rank_stop == radix) {
      rank_stop--;
    }
@@ -1411,7 +1416,7 @@ int32_t get_log2_radix(int32_t rad)
        cumulative = cumulative * 2;
      }
    }
-   fprintf(stderr,"ERROR: Radix %ld not a power of 2\n", rad);
+   fprintf(stderr,"ERROR: Radix %d not a power of 2\n", rad);
    exit(-1);
 }
 
@@ -1427,7 +1432,7 @@ int32_t get_log2_keys(int32_t num_keys)
        cumulative = cumulative * 2;
      }
    }
-   fprintf(stderr,"ERROR: Number of keys %ld not a power of 2\n", num_keys);
+   fprintf(stderr,"ERROR: Number of keys %d not a power of 2\n", num_keys);
    exit(-1);
 }
 
@@ -1462,7 +1467,7 @@ void init(int32_t key_start, int32_t key_stop, int32_t from)
 {
    double ran_num;
    double sum;
-   int32_t tmp;
+   //int32_t tmp;
    int32_t i;
    int32_t *key_from;
 
@@ -1477,7 +1482,7 @@ void init(int32_t key_start, int32_t key_stop, int32_t from)
       ran_num = product_mod_46(ran_num, RATIO);
       sum = sum + ran_num / RADIX;
       key_from[i] = (int32_t) ((sum / 4.0) *  max_key);
-      tmp = (int32_t) ((key_from[i])/100);
+      //tmp = (int32_t) ((key_from[i])/100);
       ran_num = product_mod_46(ran_num, RATIO);
       sum = ran_num / RADIX;
    }
@@ -1494,14 +1499,14 @@ void test_sort(int32_t final)
    key_final = key[final];
    for (i = 0; i < num_keys-1; i++) {
      if (key_final[i] > key_final[i + 1]) {
-       fprintf(stderr,"error with key %ld, value %ld %ld \n",
+       fprintf(stderr,"error with key %d, value %d %d \n",
         i,key_final[i],key_final[i + 1]);
        mistake++;
      }
    }
 
    if (mistake) {
-      printf("FAILED: %ld keys out of place.\n", mistake);
+      printf("FAILED: %d keys out of place.\n", mistake);
    } else {
       printf("PASSED: All keys in place.\n");
    }
@@ -1516,9 +1521,9 @@ void printout()
    key_final = (int32_t *) key[global->final];
    printf("\n");
    printf("                 SORTED KEY VALUES\n");
-   printf("%8ld ",key_final[0]);
+   printf("%8d ",key_final[0]);
    for (i = 0; i < num_keys-1; i++) {
-     printf("%8ld ",key_final[i+1]);
+     printf("%8d ",key_final[i+1]);
      if ((i+2)%5 == 0) {
        printf("\n");
      }
