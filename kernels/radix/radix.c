@@ -180,6 +180,7 @@ int main(int argc, char *argv[])
    int32_t **temp2;
    int32_t *a;
    int32_t c;
+   int32_t Error;
    double mint, maxt, avgt;
    double minrank, maxrank, avgrank;
    double minsort, maxsort, avgsort;
@@ -313,12 +314,6 @@ int main(int argc, char *argv[])
 	}
 
 }*/
-   {
-
-	uint32_t	Error;
-
-
-
 	Error = pthread_mutex_init(&(global->barrier_rank).mutex, NULL);
 
 	if (Error != 0) {
@@ -349,13 +344,6 @@ int main(int argc, char *argv[])
 
 	(global->barrier_rank).cycle = 0;
 
-}
-   {
-
-	uint32_t	Error;
-
-
-
 	Error = pthread_mutex_init(&(global->barrier_key).mutex, NULL);
 
 	if (Error != 0) {
@@ -380,13 +368,10 @@ int main(int argc, char *argv[])
 
 	}
 
-
-
 	(global->barrier_key).counter = 0;
 
 	(global->barrier_key).cycle = 0;
 
-}
    
    for (i=0; i<2*number_of_processors; i++) {
      {
@@ -478,12 +463,6 @@ int main(int argc, char *argv[])
 
    /* Fill the random-number array. */
    
-   {
-
-	int32_t	i, Error;
-
-
-
 	for (i = 0; i < (number_of_processors) - 1; i++) {
 
 		Error = pthread_create(&PThreadTable[i], NULL, (void * (*)(void *))(slave_sort), NULL);
@@ -502,11 +481,6 @@ int main(int argc, char *argv[])
 
 	slave_sort();
 
-};
-   {
-
-	uint32_t	i, Error;
-
 	for (i = 0; i < (number_of_processors) - 1; i++) {
 
 		Error = pthread_join(PThreadTable[i], NULL);
@@ -520,8 +494,6 @@ int main(int argc, char *argv[])
 		}
 
 	}
-
-};
 
    printf("\n");
    printf("                 PROCESS STATISTICS\n");
@@ -1404,51 +1376,14 @@ int32_t get_max_digits(int32_t max_key)
   return temp;
 }
 
-int32_t get_log2_radix(int32_t rad)
-{
-   int32_t cumulative=1;
-   int32_t out;
-
-   for (out = 0; out < 20; out++) {
-     if (cumulative == rad) {
-       return(out);
-     } else {
-       cumulative = cumulative * 2;
-     }
-   }
-   fprintf(stderr,"ERROR: Radix %d not a power of 2\n", rad);
-   exit(-1);
-}
-
-int32_t get_log2_keys(int32_t num_keys)
-{
-   int32_t cumulative=1;
-   int32_t out;
-
-   for (out = 0; out < 30; out++) {
-     if (cumulative == num_keys) {
-       return(out);
-     } else {
-       cumulative = cumulative * 2;
-     }
-   }
-   fprintf(stderr,"ERROR: Number of keys %d not a power of 2\n", num_keys);
-   exit(-1);
-}
-
 int32_t log_2(int32_t number)
 {
   int32_t cumulative = 1;
   int32_t out = 0;
-  int32_t done = 0;
 
-  while ((cumulative < number) && (!done) && (out < 50)) {
-    if (cumulative == number) {
-      done = 1;
-    } else {
-      cumulative = cumulative * 2;
-      out ++;
-    }
+  while ((cumulative < number) && (cumulative != number) && (out < 50)) {
+    cumulative = cumulative * 2;
+    out ++;
   }
 
   if (cumulative == number) {
