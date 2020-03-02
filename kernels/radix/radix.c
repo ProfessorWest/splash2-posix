@@ -68,12 +68,9 @@
 
 pthread_t PThreadTable[MAX_THREADS];
 
-
-
 struct prefix_node {
    int32_t densities[MAX_RADIX];
    int32_t ranks[MAX_RADIX];
-   
 
 struct {
 
@@ -687,7 +684,9 @@ void slave_sort()
 		(global->barrier_key).counter = 0;
 
 		Error = pthread_cond_broadcast(&(global->barrier_key).cv);
-
+        if (Error) {
+            perror("Error with pthread_cond_broadcast!\n");
+        }
 	}
 
 	pthread_mutex_unlock(&(global->barrier_key).mutex);
@@ -744,7 +743,9 @@ void slave_sort()
 		(global->barrier_key).counter = 0;
 
 		Error = pthread_cond_broadcast(&(global->barrier_key).cv);
-
+        if (Error) {
+            perror("Error while broadcasing pthread!\n");
+        }
 	}
 
 	pthread_mutex_unlock(&(global->barrier_key).mutex);
@@ -851,6 +852,9 @@ void slave_sort()
 		(global->barrier_rank).counter = 0;
 
 		Error = pthread_cond_broadcast(&(global->barrier_rank).cv);
+        if (Error) {
+            perror("Error while broadcasing pthread!\n");
+        }
 
 	}
 
@@ -976,7 +980,9 @@ void slave_sort()
 		(global->barrier_rank).counter = 0;
 
 		Error = pthread_cond_broadcast(&(global->barrier_rank).cv);
-
+        if (Error) {
+            perror("Error while broadcasing pthread!\n");
+        }
 	}
 
 	pthread_mutex_unlock(&(global->barrier_rank).mutex);
@@ -1128,7 +1134,9 @@ void slave_sort()
 		(global->barrier_rank).counter = 0;
 
 		Error = pthread_cond_broadcast(&(global->barrier_rank).cv);
-
+        if (Error) {
+            perror("Error while broadcasing pthread!\n");
+        }
 	}
 
 	pthread_mutex_unlock(&(global->barrier_rank).mutex);
@@ -1225,7 +1233,9 @@ void slave_sort()
 		(global->barrier_rank).counter = 0;
 
 		Error = pthread_cond_broadcast(&(global->barrier_rank).cv);
-
+        if (Error) {
+            perror("Error while broadcasing pthread!\n");
+        }
 	}
 
 	pthread_mutex_unlock(&(global->barrier_rank).mutex);
@@ -1285,7 +1295,9 @@ void slave_sort()
 		(global->barrier_rank).counter = 0;
 
 		Error = pthread_cond_broadcast(&(global->barrier_rank).cv);
-
+        if (Error) {
+            perror("Error while broadcasing pthread!\n");
+        }
 	}
 
 	pthread_mutex_unlock(&(global->barrier_rank).mutex);
@@ -1313,6 +1325,7 @@ void slave_sort()
      global->final = to;
    }
 
+   free(key_density);
 }
 
 /*
