@@ -39,6 +39,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <unistd.h>
+#include <stdint.h>
 
 #define DEFAULT_P                    1
 #define DEFAULT_N               262144
@@ -70,8 +71,8 @@ pthread_t PThreadTable[MAX_THREADS];
 
 
 struct prefix_node {
-   long densities[MAX_RADIX];
-   long ranks[MAX_RADIX];
+   int32_t densities[MAX_RADIX];
+   int32_t ranks[MAX_RADIX];
    
 
 struct {
@@ -80,7 +81,7 @@ struct {
 
 	pthread_cond_t	CondVar;
 
-	unsigned long	Flag;
+	uint32_t	Flag;
 
 } done;
 
@@ -89,7 +90,7 @@ struct {
 };
 
 struct global_memory {
-   long Index;                             /* process ID */
+   int32_t Index;                             /* process ID */
    pthread_mutex_t (lock_Index);                    /* for fetch and add to get ID */
    pthread_mutex_t (rank_lock);                     /* for fetch and add to get ID */
 /*   pthread_mutex_t section_lock[MAX_PROCESSORS];*/  /* key locks */
@@ -101,9 +102,9 @@ struct {
 
 	pthread_cond_t	cv;
 
-	unsigned long	counter;
+	uint32_t	counter;
 
-	unsigned long	cycle;
+	uint32_t	cycle;
 
 } (barrier_rank);
 
@@ -116,9 +117,9 @@ struct {
 
 	pthread_cond_t	cv;
 
-	unsigned long	counter;
+	uint32_t	counter;
 
-	unsigned long	cycle;
+	uint32_t	cycle;
 
 } (barrier_key);
 
@@ -126,63 +127,63 @@ struct {
    double *ranktime;
    double *sorttime;
    double *totaltime;
-   long final;
-   unsigned long starttime;
-   unsigned long rs;
-   unsigned long rf;
+   int32_t final;
+   uint32_t starttime;
+   uint32_t rs;
+   uint32_t rf;
    struct prefix_node prefix_tree[2 * MAX_PROCESSORS];
 } *global;
 
 struct global_private {
   char pad[PAGE_SIZE];
-  long *rank_ff;         /* overall processor ranks */
+  int32_t *rank_ff;         /* overall processor ranks */
 } gp[MAX_PROCESSORS];
 
-long *key[2];            /* sort from one index into the other */
-long **rank_me;          /* individual processor ranks */
-long *key_partition;     /* keys a processor works on */
-long *rank_partition;    /* ranks a processor works on */
+int32_t *key[2];            /* sort from one index into the other */
+int32_t **rank_me;          /* individual processor ranks */
+int32_t *key_partition;     /* keys a processor works on */
+int32_t *rank_partition;    /* ranks a processor works on */
 
-long number_of_processors = DEFAULT_P;
-long max_num_digits;
-long radix = DEFAULT_R;
-long num_keys = DEFAULT_N;
-long max_key = DEFAULT_M;
-long log2_radix;
-long log2_keys;
-long dostats = 0;
-long test_result = 0;
-long doprint = 0;
+int32_t number_of_processors = DEFAULT_P;
+int32_t max_num_digits;
+int32_t radix = DEFAULT_R;
+int32_t num_keys = DEFAULT_N;
+int32_t max_key = DEFAULT_M;
+int32_t log2_radix;
+int32_t log2_keys;
+int32_t dostats = 0;
+int32_t test_result = 0;
+int32_t doprint = 0;
 
 void slave_sort(void);
 double product_mod_46(double t1, double t2);
-double ran_num_init(unsigned long k, double b, double t);
-long get_max_digits(long max_key);
-long get_log2_radix(long rad);
-long get_log2_keys(long num_keys);
-long log_2(long number);
-void printerr(char *s);
-void init(long key_start, long key_stop, long from);
-void test_sort(long final);
+double ran_num_init(uint32_t k, double b, double t);
+int32_t get_max_digits(int32_t max_key);
+int32_t get_log2_radix(int32_t rad);
+int32_t get_log2_keys(int32_t num_keys);
+int32_t log_2(int32_t number);
+void printerr(const char *s);
+void init(int32_t key_start, int32_t key_stop, int32_t from);
+void test_sort(int32_t final);
 void printout(void);
 
 int main(int argc, char *argv[])
 {
-   long i;
-   long p;
-   long quotient;
-   long remainder;
-   long sum_i; 
-   long sum_f;
-   long size;
-   long **temp;
-   long **temp2;
-   long *a;
-   long c;
+   int32_t i;
+   int32_t p;
+   int32_t quotient;
+   int32_t remainder;
+   int32_t sum_i; 
+   int32_t sum_f;
+   int32_t size;
+   int32_t **temp;
+   int32_t **temp2;
+   int32_t *a;
+   int32_t c;
    double mint, maxt, avgt;
    double minrank, maxrank, avgrank;
    double minsort, maxsort, avgsort;
-   unsigned long start;
+   uint32_t start;
 
 
    {
@@ -193,7 +194,7 @@ int main(int argc, char *argv[])
 
 	gettimeofday(&FullTime, NULL);
 
-	(start) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
+	(start) = (uint32_t)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
 
 }
 
@@ -263,15 +264,15 @@ int main(int argc, char *argv[])
 	   fprintf(stderr,"ERROR: Cannot malloc enough memory for global\n");
 	   exit(-1);
    }
-   key[0] = (long *) malloc(num_keys*sizeof(long));
-   key[1] = (long *) malloc(num_keys*sizeof(long));
-   key_partition = (long *) malloc((number_of_processors+1)*sizeof(long));
-   rank_partition = (long *) malloc((number_of_processors+1)*sizeof(long));
+   key[0] = (int32_t *) malloc(num_keys*sizeof(int32_t));
+   key[1] = (int32_t *) malloc(num_keys*sizeof(int32_t));
+   key_partition = (int32_t *) malloc((number_of_processors+1)*sizeof(int32_t));
+   rank_partition = (int32_t *) malloc((number_of_processors+1)*sizeof(int32_t));
    global->ranktime = (double *) malloc(number_of_processors*sizeof(double));
    global->sorttime = (double *) malloc(number_of_processors*sizeof(double));
    global->totaltime = (double *) malloc(number_of_processors*sizeof(double));
-   size = number_of_processors*(radix*sizeof(long)+sizeof(long *));
-   rank_me = (long **) malloc(size);
+   size = number_of_processors*(radix*sizeof(int32_t)+sizeof(int32_t *));
+   rank_me = (int32_t **) malloc(size);
    if ((key[0] == NULL) || (key[1] == NULL) || (key_partition == NULL) || (rank_partition == NULL) || 
        (global->ranktime == NULL) || (global->sorttime == NULL) || (global->totaltime == NULL) || (rank_me == NULL)) {
      fprintf(stderr,"ERROR: Cannot malloc enough memory\n");
@@ -280,20 +281,20 @@ int main(int argc, char *argv[])
 
    temp = rank_me;
    temp2 = temp + number_of_processors;
-   a = (long *) temp2;
+   a = (int32_t *) temp2;
    for (i=0;i<number_of_processors;i++) {
-     *temp = (long *) a;
+     *temp = (int32_t *) a;
      temp++;
      a += radix;
    }
    for (i=0;i<number_of_processors;i++) {
-     gp[i].rank_ff = (long *) malloc(radix*sizeof(long)+PAGE_SIZE);
+     gp[i].rank_ff = (int32_t *) malloc(radix*sizeof(int32_t)+PAGE_SIZE);
    }
    {pthread_mutex_init(&(global->lock_Index), NULL);}
    {pthread_mutex_init(&(global->rank_lock), NULL);}
 /*   {
 
-	unsigned long	i, Error;
+	uint32_t	i, Error;
 
 
 
@@ -314,7 +315,7 @@ int main(int argc, char *argv[])
 }*/
    {
 
-	unsigned long	Error;
+	uint32_t	Error;
 
 
 
@@ -351,7 +352,7 @@ int main(int argc, char *argv[])
 }
    {
 
-	unsigned long	Error;
+	uint32_t	Error;
 
 
 
@@ -479,7 +480,7 @@ int main(int argc, char *argv[])
    
    {
 
-	long	i, Error;
+	int32_t	i, Error;
 
 
 
@@ -504,7 +505,7 @@ int main(int argc, char *argv[])
 };
    {
 
-	unsigned long	i, Error;
+	uint32_t	i, Error;
 
 	for (i = 0; i < (number_of_processors) - 1; i++) {
 
@@ -597,43 +598,43 @@ int main(int argc, char *argv[])
 
 void slave_sort()
 {
-   long i;
-   long MyNum;
-   long this_key;
-   long tmp;
-   long loopnum;
-   long shiftnum;
-   long bb;
-   long my_key;
-   long key_start;
-   long key_stop;
-   long rank_start;
-   long rank_stop;
-   long from=0;
-   long to=1;
-   long *key_density;       /* individual processor key densities */
-   unsigned long time1;
-   unsigned long time2;
-   unsigned long time3;
-   unsigned long time4;
-   unsigned long time5;
-   unsigned long time6;
+   int32_t i;
+   int32_t MyNum;
+   int32_t this_key;
+   int32_t tmp;
+   int32_t loopnum;
+   int32_t shiftnum;
+   int32_t bb;
+   int32_t my_key;
+   int32_t key_start;
+   int32_t key_stop;
+   int32_t rank_start;
+   int32_t rank_stop;
+   int32_t from=0;
+   int32_t to=1;
+   int32_t *key_density;       /* individual processor key densities */
+   uint32_t time1;
+   uint32_t time2;
+   uint32_t time3;
+   uint32_t time4;
+   uint32_t time5;
+   uint32_t time6;
    double ranktime=0;
    double sorttime=0;
-   long *key_from;
-   long *key_to;
-   long *rank_me_mynum;
-   long *rank_ff_mynum;
-   long stats;
+   int32_t *key_from;
+   int32_t *key_to;
+   int32_t *rank_me_mynum;
+   int32_t *rank_ff_mynum;
+   int32_t stats;
    struct prefix_node* n;
    struct prefix_node* r;
    struct prefix_node* l;
    struct prefix_node* my_node;
    struct prefix_node* their_node;
-   long index;
-   long level;
-   long base;
-   long offset;
+   int32_t index;
+   int32_t level;
+   int32_t base;
+   int32_t offset;
 
    stats = dostats;
 
@@ -648,7 +649,7 @@ void slave_sort()
 /* POSSIBLE ENHANCEMENT:  Here is where one might pin processes to
    processors to avoid migration */
 
-   key_density = (long *) malloc(radix*sizeof(long));
+   key_density = (int32_t *) malloc(radix*sizeof(int32_t));
 
    /* Fill the random-number array. */
 
@@ -664,9 +665,9 @@ void slave_sort()
 
    {
 
-	unsigned long	Error, Cycle;
+	uint32_t	Error, Cycle;
 
-	long		Cancel, Temp;
+	int32_t		Cancel, Temp;
 
 
 
@@ -721,9 +722,9 @@ void slave_sort()
 
    {
 
-	unsigned long	Error, Cycle;
+	uint32_t	Error, Cycle;
 
-	long		Cancel, Temp;
+	int32_t		Cancel, Temp;
 
 
 
@@ -782,7 +783,7 @@ void slave_sort()
 
 	gettimeofday(&FullTime, NULL);
 
-	(time1) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
+	(time1) = (uint32_t)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
 
 }
    }
@@ -806,7 +807,7 @@ void slave_sort()
 
 	gettimeofday(&FullTime, NULL);
 
-	(time2) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
+	(time2) = (uint32_t)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
 
 }
      }
@@ -814,8 +815,8 @@ void slave_sort()
      for (i = 0; i < radix; i++) {
        rank_me_mynum[i] = 0;
      }  
-     key_from = (long *) key[from];
-     key_to = (long *) key[to];
+     key_from = (int32_t *) key[from];
+     key_to = (int32_t *) key[to];
      for (i=key_start;i<key_stop;i++) {
        my_key = key_from[i] & bb;
        my_key = my_key >> shiftnum;  
@@ -828,9 +829,9 @@ void slave_sort()
 
      {
 
-	unsigned long	Error, Cycle;
+	uint32_t	Error, Cycle;
 
-	long		Cancel, Temp;
+	int32_t		Cancel, Temp;
 
 
 
@@ -953,9 +954,9 @@ void slave_sort()
      }
      {
 
-	unsigned long	Error, Cycle;
+	uint32_t	Error, Cycle;
 
-	long		Cancel, Temp;
+	int32_t		Cancel, Temp;
 
 
 
@@ -1098,16 +1099,16 @@ void slave_sort()
 
 	gettimeofday(&FullTime, NULL);
 
-	(time3) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
+	(time3) = (uint32_t)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
 
 };
      }
 
      {
 
-	unsigned long	Error, Cycle;
+	uint32_t	Error, Cycle;
 
-	long		Cancel, Temp;
+	int32_t		Cancel, Temp;
 
 
 
@@ -1166,7 +1167,7 @@ void slave_sort()
 
 	gettimeofday(&FullTime, NULL);
 
-	(time4) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
+	(time4) = (uint32_t)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
 
 };
      }
@@ -1190,7 +1191,7 @@ void slave_sort()
 
 	gettimeofday(&FullTime, NULL);
 
-	(time5) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
+	(time5) = (uint32_t)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
 
 };
      }
@@ -1202,9 +1203,9 @@ void slave_sort()
 
      {
 
-	unsigned long	Error, Cycle;
+	uint32_t	Error, Cycle;
 
-	long		Cancel, Temp;
+	int32_t		Cancel, Temp;
 
 
 
@@ -1262,9 +1263,9 @@ void slave_sort()
 
    {
 
-	unsigned long	Error, Cycle;
+	uint32_t	Error, Cycle;
 
-	long		Cancel, Temp;
+	int32_t		Cancel, Temp;
 
 
 
@@ -1322,7 +1323,7 @@ void slave_sort()
 
 	gettimeofday(&FullTime, NULL);
 
-	(time6) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
+	(time6) = (uint32_t)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
 
 }
      global->ranktime[MyNum] = ranktime;
@@ -1347,15 +1348,15 @@ double product_mod_46(double t1, double t2)
    double a2;
    double b2;
 			
-   a1 = (double)((long)(t1 / RADIX_S));    /* Decompose the arguments.  */
+   a1 = (double)((int32_t)(t1 / RADIX_S));    /* Decompose the arguments.  */
    a2 = t1 - a1 * RADIX_S;
-   b1 = (double)((long)(t2 / RADIX_S));
+   b1 = (double)((int32_t)(t2 / RADIX_S));
    b2 = t2 - b1 * RADIX_S;
    t1 = a1 * b2 + a2 * b1;      /* Multiply the arguments.  */
-   t2 = (double)((long)(t1 / RADIX_S));
+   t2 = (double)((int32_t)(t1 / RADIX_S));
    t2 = t1 - t2 * RADIX_S;
    t1 = t2 * RADIX_S + a2 * b2;
-   t2 = (double)((long)(t1 / RADIX));
+   t2 = (double)((int32_t)(t1 / RADIX));
 
    return (t1 - t2 * RADIX);    /* Return the product.  */
 }
@@ -1363,9 +1364,9 @@ double product_mod_46(double t1, double t2)
 /*
  * finds the (k)th random number, given the seed, b, and the ratio, t.
  */
-double ran_num_init(unsigned long k, double b, double t)
+double ran_num_init(uint32_t k, double b, double t)
 {
-   unsigned long j;
+   uint32_t j;
 
    while (k != 0) {             /* while() is executed m times
 				   such that 2^m > k.  */
@@ -1380,11 +1381,11 @@ double ran_num_init(unsigned long k, double b, double t)
    return b;
 }
 
-long get_max_digits(long max_key)
+int32_t get_max_digits(int32_t max_key)
 {
-  long done = 0;
-  long temp = 1;
-  long key_val;
+  int32_t done = 0;
+  int32_t temp = 1;
+  int32_t key_val;
 
   key_val = max_key;
   while (!done) {
@@ -1398,10 +1399,10 @@ long get_max_digits(long max_key)
   return temp;
 }
 
-long get_log2_radix(long rad)
+int32_t get_log2_radix(int32_t rad)
 {
-   long cumulative=1;
-   long out;
+   int32_t cumulative=1;
+   int32_t out;
 
    for (out = 0; out < 20; out++) {
      if (cumulative == rad) {
@@ -1414,10 +1415,10 @@ long get_log2_radix(long rad)
    exit(-1);
 }
 
-long get_log2_keys(long num_keys)
+int32_t get_log2_keys(int32_t num_keys)
 {
-   long cumulative=1;
-   long out;
+   int32_t cumulative=1;
+   int32_t out;
 
    for (out = 0; out < 30; out++) {
      if (cumulative == num_keys) {
@@ -1430,11 +1431,11 @@ long get_log2_keys(long num_keys)
    exit(-1);
 }
 
-long log_2(long number)
+int32_t log_2(int32_t number)
 {
-  long cumulative = 1;
-  long out = 0;
-  long done = 0;
+  int32_t cumulative = 1;
+  int32_t out = 0;
+  int32_t done = 0;
 
   while ((cumulative < number) && (!done) && (out < 50)) {
     if (cumulative == number) {
@@ -1452,22 +1453,22 @@ long log_2(long number)
   }
 }
 
-void printerr(char *s)
+void printerr(const char *s)
 {
   fprintf(stderr,"ERROR: %s\n",s);
 }
 
-void init(long key_start, long key_stop, long from)
+void init(int32_t key_start, int32_t key_stop, int32_t from)
 {
    double ran_num;
    double sum;
-   long tmp;
-   long i;
-   long *key_from;
+   int32_t tmp;
+   int32_t i;
+   int32_t *key_from;
 
    ran_num = ran_num_init((key_start << 2) + 1, SEED, RATIO);
    sum = ran_num / RADIX;
-   key_from = (long *) key[from];
+   key_from = (int32_t *) key[from];
    for (i = key_start; i < key_stop; i++) {
       ran_num = product_mod_46(ran_num, RATIO);
       sum = sum + ran_num / RADIX;
@@ -1475,18 +1476,18 @@ void init(long key_start, long key_stop, long from)
       sum = sum + ran_num / RADIX;
       ran_num = product_mod_46(ran_num, RATIO);
       sum = sum + ran_num / RADIX;
-      key_from[i] = (long) ((sum / 4.0) *  max_key);
-      tmp = (long) ((key_from[i])/100);
+      key_from[i] = (int32_t) ((sum / 4.0) *  max_key);
+      tmp = (int32_t) ((key_from[i])/100);
       ran_num = product_mod_46(ran_num, RATIO);
       sum = ran_num / RADIX;
    }
 }
 
-void test_sort(long final)
+void test_sort(int32_t final)
 {
-   long i;
-   long mistake = 0;
-   long *key_final;
+   int32_t i;
+   int32_t mistake = 0;
+   int32_t *key_final;
 
    printf("\n");
    printf("                  TESTING RESULTS\n");
@@ -1509,10 +1510,10 @@ void test_sort(long final)
 
 void printout()
 {
-   long i;
-   long *key_final;
+   int32_t i;
+   int32_t *key_final;
 
-   key_final = (long *) key[global->final];
+   key_final = (int32_t *) key[global->final];
    printf("\n");
    printf("                 SORTED KEY VALUES\n");
    printf("%8ld ",key_final[0]);
