@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "fo.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -18,17 +15,17 @@
 /*************************************************************************/
 
 
-#line 17
+
 #include <pthread.h>
-#line 17
+
 #include <sys/time.h>
-#line 17
+
 #include <unistd.h>
-#line 17
+
 #include <stdlib.h>
-#line 17
+
 extern pthread_t PThreadTable[];
-#line 17
+
 
 
 #include "matrix.h"
@@ -303,13 +300,13 @@ void DecrementRemaining(long dest_block, long MyNum, struct LocalCopies *lc)
 
 void PerformUpdate(struct BlockList *above_bl, struct BlockList *below_bl, long MyNum, struct LocalCopies *lc)
 {
-  long above, below;
+  //long above, below;
   long desti, destj, dest_block, is_diag;
   long *relative_i, *relative_j;
   double *destination;
 
-  above = above_bl->theBlock;
-  below = below_bl->theBlock;
+  //above = above_bl->theBlock;
+  //below = below_bl->theBlock;
 
   desti = below_bl->row;
   destj = above_bl->row;

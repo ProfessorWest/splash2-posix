@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "matrix.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -140,7 +137,7 @@ struct LocalCopies {
 #define FAN_OUT 2
 
 /*
- * amal.C
+ * amal.c
  */
 long OpsFromSuper(long size, long nz);
 long CountSupers(long cols, long *node);
@@ -153,7 +150,7 @@ void InvertPerm(long n, long *PERM, long *INVP);
 double PathLength(long cols, long rows, long target_panel_size);
 
 /*
- * assign.C
+ * assign.c
  */
 void PDIV(long src_col, long src_nz, double *ops, double *misses, double *runtime);
 void PMOD(long src_col, long dest_col, long dest_nz, double *ops, double *misses, double *runtime);
@@ -162,7 +159,7 @@ void AssignBlocksNow(void);
 void EmbedBlocks(void);
 
 /*
- * bfac.C
+ * bfac.c
  */
 void BFac(long diag, struct LocalCopies *lc);
 void OneFac(double *A, long n1, long n2);
@@ -177,14 +174,14 @@ void OneLower(double *A, double *C, long n1, long n2, long n3);
 void FindBlockUpdate(long domain, long blj, long bli, double **update, long *stride);
 
 /*
- * bksolve.C
+ * bksolve.c
  */
 double *TriBSolve(BMatrix LB, double *b, long *PERM);
 double ComputeNorm(double *x, long n);
 double *CreateVector(SMatrix M);
 
 /*
- * block2.C
+ * block2.c
  */
 void CreateBlockedMatrix2(SMatrix M, long block_ub, long *T, long *firstchild, long *child, long *PERM, long *INVP, long *domain, long *partition);
 long FindNumPartitions(long set_size, long piece_size);
@@ -208,7 +205,7 @@ void FindMachineDimensions(long P);
 long EmbeddedOwner(long block);
 
 /*
- * fo.C
+ * fo.c
  */
 void PreProcessFO(long MyNum);
 void PreAllocate1FO(void);
@@ -237,19 +234,19 @@ void ScatterUpdateFO(long dimi, long *structi, long dimj, long *structj, long de
 void ScatterUpdateFO2(long dimi, long *structi, long dimj, long *structj, long stride, long destdim, double *oldupdate, double *newupdate);
 
 /*
- * malloc.C
+ * malloc.c
  */
 void MallocInit(long P);
 void InitOneFreeList(long p);
 void MallocStats(void);
 long FindBucket(long size);
 char *MyMalloc(long size, long home);
-void MigrateMem(long *start, long length, long home);
-void MyFree(long *block);
-void MyFreeNow(long *block);
+void MigrateMem(void *start, long length, long home);
+void MyFree(void *block);
+void MyFreeNow(void *block);
 
 /*
- * mf.C
+ * mf.c
  */
 void InitTaskQueues(long P);
 long FindBlock(long i, long j);
@@ -258,7 +255,7 @@ long TaskWaiting(long MyNum);
 void GetBlock(long *desti, long *destj, long *src, struct Update **update, long MyNum, struct LocalCopies *lc);
 
 /*
- * numLL.C
+ * numLL.c
  */
 void FactorLLDomain(long which_domain, long MyNum, struct LocalCopies *lc);
 void CompleteSupernodeB(long super);
@@ -273,7 +270,7 @@ void ModifyTwoBySupernodeB(long super, long lastcol, long theFirst, double *dest
 void ModifyBySupernodeB(long super, long lastcol, long theFirst, double *destination);
 
 /*
- * parts.C
+ * parts.c
  */
 void Partition(SMatrix M, long parts, long *T, long *assigned_ops, long *domain, long *domains, long *proc_domains);
 void MarkSubtreeAsDomain(long *domain, long root);
@@ -284,7 +281,7 @@ struct Chunk *NewChunk(void);
 struct Chunk *GetChunk(void);
 
 /*
- * seg.C
+ * seg.c
  */
 void ComputeTargetBlockSize(SMatrix M, long P);
 void FindMaxHeight(SMatrix L, long root, long height, long *maxm);
@@ -292,14 +289,14 @@ void NoSegments(SMatrix M);
 void CreatePermutation(long n, long *PERM, long permutation_method);
 
 /*
- * solve.C
+ * solve.c
  */
 void Go(void);
 void PlaceDomains(long P);
 void ComposePerm(long *PERM1, long *PERM2, long n);
 
 /*
- * tree.C
+ * tree.c
  */
 void EliminationTreeFromA(SMatrix A, long *T, long *P, long *INVP);
 void ParentToChild(long *T, long n, long *firstchild, long *child);
@@ -308,7 +305,7 @@ void FindSupernodes(SMatrix A, long *T, long *nz, long *node);
 void ComputeWorkTree(SMatrix A, long *nz, double *work_tree);
 
 /*
- * util.C
+ * util.c
  */
 SMatrix NewMatrix(long n, long m, long nz);
 void FreeMatrix(SMatrix M);

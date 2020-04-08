@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "amal.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -18,17 +15,17 @@
 /*************************************************************************/
 
 
-#line 17
+
 #include <pthread.h>
-#line 17
+
 #include <sys/time.h>
-#line 17
+
 #include <unistd.h>
-#line 17
+
 #include <stdlib.h>
-#line 17
+
 extern pthread_t PThreadTable[];
-#line 17
+
 
 
 #include <stdio.h>
@@ -142,9 +139,9 @@ void Amalgamate2(long join, SMatrix M, long *T, long *nz, long *node, long *doma
 void ConsiderMerge(long join, long super, SMatrix M, long *nz, long *node, long *domain, long target_size, long traversal_order)
 {
   long i, parent;
-  long ops_before, ops_after, do_merge, do_merge_simple, possible;
+  long ops_before, ops_after, do_merge, /*do_merge_simple,*/ possible;
   long allow_critical_to_grow;
-  double time_before, time_after, dummy, simple_diff;
+  double time_before, time_after, dummy; //, simple_diff;
   double path_grows;
 
   super = member_of[super];
@@ -178,8 +175,8 @@ void ConsiderMerge(long join, long super, SMatrix M, long *nz, long *node, long 
 	 nz[parent]-node[parent], &dummy, &dummy, &time_after);
     PADD(nz[parent]-node[parent], nz[parent]-node[parent], &dummy, &time_after);
 
-    simple_diff = (ops_after-ops_before) -
-      5.0*3*(nz[super]-node[super])*(nz[super]-node[super]+1)/2;
+    //simple_diff = (ops_after-ops_before) -
+      //5.0*3*(nz[super]-node[super])*(nz[super]-node[super]+1)/2;
 
     possible = (!domain || domain[super] == 0 || domain[parent] != 0);
 
@@ -192,7 +189,7 @@ void ConsiderMerge(long join, long super, SMatrix M, long *nz, long *node, long 
       path_grows = 0.0;
 
     do_merge = (possible && time_before > time_after && path_grows == 0.0);
-    do_merge_simple = (possible && simple_diff < 0);
+    //do_merge_simple = (possible && simple_diff < 0);
 
     if (do_merge) {
 

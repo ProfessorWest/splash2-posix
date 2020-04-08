@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "util.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -18,18 +15,16 @@
 /*************************************************************************/
 
 
-#line 17
+
 #include <pthread.h>
-#line 17
 #include <sys/time.h>
-#line 17
 #include <unistd.h>
-#line 17
 #include <stdlib.h>
 #include <ctype.h>
-#line 17
+#include <string.h>
+
 extern pthread_t PThreadTable[];
-#line 17
+
 
 
 #include <math.h>
@@ -38,6 +33,8 @@ extern pthread_t PThreadTable[];
 
 #define Error(m) { printf(m); exit(0); }
 #define AddMember(set, new) { long s, n; s = set; n = new; link[n] = link[s]; link[s] = n; }
+
+int ReadVectorStr(const char *text, long n, long *where, long perline, long persize);
 
 long maxm;
 
@@ -49,15 +46,15 @@ typedef struct {
     */
 void printMatrix(SMatrix M) {
 	long hi, lo;
-	long i, j, k, tmp;
+	//long i, j, k, tmp;
 
     //for (int k = 0; k < M.n; k++) {
     for (int k = 0; k < 2; k++) {
 	    hi = M.col[k+1];
 	    lo = M.col[k];
-        printf("lo = %d, hi = %d\n", lo, hi);
-	    for (i=lo; i<hi; i++) {
-            printf("%d ", M.row[i]);
+        printf("lo = %ld, hi = %ld\n", lo, hi);
+	    for (int i=lo; i<hi; i++) {
+            printf("%ld ", M.row[i]);
         }
         printf("\n");
     }
@@ -102,8 +99,9 @@ void FreeMatrix(SMatrix M)
   MyFree(M.col);
   MyFree(M.startrow);
   MyFree(M.row);
-  if (M.nz)
+  if (M.nz) {
     MyFree(M.nz);
+  }
 }
 
 
@@ -131,7 +129,7 @@ double Value(long i, long j)
   }
 }
 
-SMatrix ReadSparseStr(char *text, char *probName);
+SMatrix ReadSparseStr(const char *text, char *probName);
 extern const char *lshp;
 
 SMatrix ReadSparse(char *name, char *probName)
@@ -235,11 +233,11 @@ SMatrix ReadSparse(char *name, char *probName)
 	return(F);
 }
 
-SMatrix ReadSparseStr(char *text, char *probName)
+SMatrix ReadSparseStr(const char *text, char *probName)
 {
 	long n, m, i, j;
 	long n_rows, tmp;
-	long numer_lines;
+	//long numer_lines;
 	long colnum, colsize, rownum, rowsize;
 	char buf[100], type[4];
 	SMatrix M, F;
@@ -258,8 +256,8 @@ SMatrix ReadSparseStr(char *text, char *probName)
 	for (i=0; i<5; i++) {
 	  sscanf(text, "%ld", &tmp);
       while (!isdigit(*text)) { text++; }
-	  if (i == 3)
-	    numer_lines = tmp;
+	  //if (i == 3)
+	    //numer_lines = tmp;
 	}
     while (*text != '\n') { text++; }
     text++;

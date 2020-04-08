@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "malloc.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -21,17 +18,17 @@
    that all returned blocks are zero */
 
 
-#line 20
+
 #include <pthread.h>
-#line 20
+
 #include <sys/time.h>
-#line 20
+
 #include <unistd.h>
-#line 20
+
 #include <stdlib.h>
-#line 20
+
 extern pthread_t PThreadTable[];
-#line 20
+
 
 
 #include "matrix.h"
@@ -81,14 +78,16 @@ void InitOneFreeList(long p)
   if (p > 0) {
     mem_pool[p].freeBlock = (long **)
       malloc((MAXFAST+1)*sizeof(long *));
-    memset(mem_pool[p].freeBlock, p, ((MAXFAST+1)*sizeof(long *)));
-    MigrateMem(mem_pool[p].freeBlock, (MAXFAST+1)*sizeof(long *), p);
+    //TODO FIXME: is it safe to cast the freeblock to long**
+    memset((long **)mem_pool[p].freeBlock, p, ((MAXFAST+1)*sizeof(long *)));
+    MigrateMem((long **)mem_pool[p].freeBlock, (MAXFAST+1)*sizeof(long *), p);
   }
   else {
     mem_pool[p].freeBlock = (long **)
       malloc((MAXFAST+1)*sizeof(long *));
-    memset(mem_pool[p].freeBlock, 0x00, (MAXFAST+1)*sizeof(long *));
-    MigrateMem(mem_pool[p].freeBlock, (MAXFAST+1)*sizeof(long *),
+    //TODO FIXME: is it safe to cast the freeblock to long**
+    memset((long **)mem_pool[p].freeBlock, 0x00, (MAXFAST+1)*sizeof(long *));
+    MigrateMem((long **)mem_pool[p].freeBlock, (MAXFAST+1)*sizeof(long *),
 	       DISTRIBUTED);
   }
   for (j=0; j<=MAXFAST; j++)
@@ -134,7 +133,7 @@ long FindBucket(long size)
 
 char *MyMalloc(long size, long home)
 {
-  long i, bucket, leftover, alloc_size, block_size;
+  long bucket, leftover, alloc_size, block_size;
   long *d, *result, *prev, *freespace;
 
   if (size < ALIGN)
@@ -221,7 +220,7 @@ char *MyMalloc(long size, long home)
     freespace+=2;
     SIZE(freespace) = block_size;
     HOME(freespace) = home;
-    for (i=0; i<block_size/sizeof(long); i++)
+    for (unsigned int i=0; i<block_size/sizeof(long); i++)
       freespace[i] = 0;
     if (block_size == alloc_size)
       result = freespace;
@@ -248,7 +247,7 @@ char *MyMalloc(long size, long home)
 }
 
 
-void MigrateMem(long *start, long length, long home)
+void MigrateMem(void *start, long length, long home)
 {
 /*  unsigned long *finish;
   unsigned long currpage, endpage;
@@ -282,23 +281,25 @@ void MigrateMem(long *start, long length, long home)
 }
     
 
-void MyFree(long *block)
+void MyFree(void *block)
 {
   long home;
+  long *lblock = (long*) block;
 
-  home = HOME(block);
+  home = HOME(lblock);
   {pthread_mutex_lock(&(mem_pool[home].memoryLock));}
   MyFreeNow(block);
   {pthread_mutex_unlock(&(mem_pool[home].memoryLock));}
 }
 
 
-void MyFreeNow(long *block)
+void MyFreeNow(void *block)
 {
   long bucket, size, home;
+  long *lblock = (long*) block;
 
-  size = SIZE(block);
-  home = HOME(block);
+  size = SIZE(lblock);
+  home = HOME(lblock);
 
   if (size <= 0) {
     printf("Bad size %ld\n", size);
@@ -322,7 +323,7 @@ void MyFreeNow(long *block)
     return;
 
   NEXTFREE(block) = (long *) mem_pool[home].freeBlock[bucket];
-  mem_pool[home].freeBlock[bucket] = block;
+  mem_pool[home].freeBlock[bucket] = lblock;
   mem_pool[home].tally -= size;
 
 }
