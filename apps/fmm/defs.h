@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "defs.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -134,7 +131,7 @@
 #define PAGE_SIZE 4096
 #define PAD_SIZE (PAGE_SIZE / (sizeof(long)))
 
-typedef enum { FALSE = 0, TRUE = 1 } bool;
+enum { FALSE = 0, TRUE = 1 };
 
 /* These defintions sets the precision of the calculations. To use single
  * precision, simply change double to float and recompile! */
@@ -173,6 +170,6 @@ extern long Expansion_Terms;
 extern real RoundReal(real val);
 extern void PrintComplexNum(complex *c);
 extern void PrintVector(vector *v);
-extern void LockedPrint(char *format, ...);
+extern void LockedPrint(const char *format, ...);
 
 #endif /* _Defs_H */

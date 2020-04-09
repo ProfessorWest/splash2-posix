@@ -126,7 +126,7 @@ extern box *Grid;
 extern void CreateBoxes(long my_id, long num_boxes);
 extern void FreeBoxes(long my_id);
 extern box *InitBox(long my_id, real x_center, real y_center, real length, box *parent);
-extern void PrintBox(box *b);
+extern void PrintBox (long _id, box *b);
 extern void PrintBoxArrayIds(box *b_array[], long array_length);
 extern void PrintExpansionTerms(complex expansion[]);
 

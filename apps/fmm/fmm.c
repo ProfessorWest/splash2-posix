@@ -237,7 +237,7 @@ ParallelExecute ()
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -325,7 +325,7 @@ ParallelExecute ()
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -449,7 +449,7 @@ ParallelExecute ()
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -514,7 +514,7 @@ ParallelExecute ()
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -650,7 +650,7 @@ StepSimulation (long my_id, time_info *local_time, long time_all)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 

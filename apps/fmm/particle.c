@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "particle.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -49,7 +46,7 @@ void
 CreateDistribution (cluster_type cluster, model_type model)
 {
    particle *particle_array;
-   long global_num_particles;
+   //long global_num_particles;
    particle *new_particle;
 //   char particle_state[RANDOM_SIZE];
    real charge;
@@ -110,7 +107,7 @@ CreateDistribution (cluster_type cluster, model_type model)
       break;
    }
 //   setstate(particle_state);
-   global_num_particles = 0;
+   //global_num_particles = 0;
    charge = 1.0 / Total_Particles;
    charge /= Total_Particles;
    for (i = 0; i < end_limit; i++) {
@@ -181,9 +178,9 @@ CreateParticleList (long my_id, long length)
 {
    {pthread_mutex_lock(&(G_Memory->mal_lock));};
    Local[my_id].Particles = (particle **) valloc(length
-#line 180
+
 						   * sizeof(particle *));;
-#line 182
+
 
 /* POSSIBLE ENHANCEMENT:  Here is where one might distribute the
    Particles data across physically distributed memories as desired.

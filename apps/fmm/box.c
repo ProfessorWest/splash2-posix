@@ -156,7 +156,7 @@ InitBox (long my_id, real x_center, real y_center, real length, box *parent)
  *
  */
 void
-PrintBox (box *b)
+PrintBox (long _id, box *b)
 {
    {pthread_mutex_lock(&(G_Memory->io_lock));};
    fflush(stdout);

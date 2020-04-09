@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "defs.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -34,16 +31,17 @@ RoundReal (real val)
 {
    double shifter;
    double frac;
-   long exp;
+   int exp;
    double shifted_frac;
    double new_frac;
-   double temp;
+   //double temp;
    real ret_val;
 
    shifter = pow((double) 10, (double) REAL_DIG - 2);
    frac = frexp((double) val, &exp);
    shifted_frac = frac * shifter;
-   temp = modf(shifted_frac, &new_frac);
+   //temp = modf(shifted_frac, &new_frac);
+   modf(shifted_frac, &new_frac);
    new_frac /= shifter;
    ret_val = (real) ldexp(new_frac, exp);
    return ret_val;
@@ -68,7 +66,7 @@ PrintVector (vector *v)
 
 
 void
-LockedPrint (char *format_str, ...)
+LockedPrint (const char *format_str, ...)
 {
    va_list ap;
 

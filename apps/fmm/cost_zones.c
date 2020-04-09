@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "cost_zones.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -51,57 +48,57 @@ CostZones (long my_id)
 {
    PartitionIterate(my_id, ComputeSubTreeCosts, BOTTOM);
    {
-#line 50
+
 	unsigned long	Error, Cycle;
-#line 50
-	long		Cancel, Temp;
-#line 50
 
-#line 50
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(G_Memory->synch).mutex);
-#line 50
-	if (Error != 0) {
-#line 50
-		printf("Error while trying to get lock in barrier.\n");
-#line 50
-		exit(-1);
-#line 50
-	}
-#line 50
 
-#line 50
-	Cycle = (G_Memory->synch).cycle;
-#line 50
-	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
-#line 50
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 50
-		while (Cycle == (G_Memory->synch).cycle) {
-#line 50
-			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
-#line 50
-			if (Error != 0) {
-#line 50
-				break;
-#line 50
-			}
-#line 50
-		}
-#line 50
-		pthread_setcancelstate(Cancel, &Temp);
-#line 50
-	} else {
-#line 50
-		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
-#line 50
-		(G_Memory->synch).counter = 0;
-#line 50
-		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
-#line 50
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 50
+
+
+
+	Cycle = (G_Memory->synch).cycle;
+
+	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (G_Memory->synch).cycle) {
+
+			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
+
+		(G_Memory->synch).counter = 0;
+
+		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
+
+	}
+
 	pthread_mutex_unlock(&(G_Memory->synch).mutex);
-#line 50
+
 };
    Local[my_id].Total_Work = Grid->subtree_cost;
    Local[my_id].Min_Work = ((Local[my_id].Total_Work / Number_Of_Processors)
@@ -115,57 +112,57 @@ CostZones (long my_id)
    InitPartition(my_id);
    CostZonesHelper(my_id, Grid, 0, RIGHT);
    {
-#line 62
+
 	unsigned long	Error, Cycle;
-#line 62
-	long		Cancel, Temp;
-#line 62
 
-#line 62
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(G_Memory->synch).mutex);
-#line 62
-	if (Error != 0) {
-#line 62
-		printf("Error while trying to get lock in barrier.\n");
-#line 62
-		exit(-1);
-#line 62
-	}
-#line 62
 
-#line 62
-	Cycle = (G_Memory->synch).cycle;
-#line 62
-	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
-#line 62
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 62
-		while (Cycle == (G_Memory->synch).cycle) {
-#line 62
-			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
-#line 62
-			if (Error != 0) {
-#line 62
-				break;
-#line 62
-			}
-#line 62
-		}
-#line 62
-		pthread_setcancelstate(Cancel, &Temp);
-#line 62
-	} else {
-#line 62
-		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
-#line 62
-		(G_Memory->synch).counter = 0;
-#line 62
-		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
-#line 62
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 62
+
+
+
+	Cycle = (G_Memory->synch).cycle;
+
+	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (G_Memory->synch).cycle) {
+
+			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
+
+		(G_Memory->synch).counter = 0;
+
+		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
+
+	}
+
 	pthread_mutex_unlock(&(G_Memory->synch).mutex);
-#line 62
+
 };
 }
 
@@ -212,7 +209,7 @@ CostZonesHelper (long my_id, box *b, long work, direction dir)
 	 cb = b->children[next_child[i]];
 	 if (cb != NULL) {
 	    if ((work + cb->subtree_cost) >= Local[my_id].Min_Work)
-	       CostZonesHelper(my_id, cb, work, child_dir[i]);
+	       CostZonesHelper(my_id, cb, work, (direction)child_dir[i]);
 	    work += cb->subtree_cost;
 	 }
 	 if (i == 2) {

@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "construct_grid.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -69,30 +66,30 @@ ConstructGrid (long my_id, time_info *local_time, long time_all)
 
    if (time_all)
       {
-#line 68
-	struct timeval	FullTime;
-#line 68
 
-#line 68
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 68
+
 	(init) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 68
+
 };
    DetermineGridSize(my_id);   /* Finds the four corners of the grid. */
    FreeBoxes(my_id);
    InitPartition(my_id);
    if (time_all)
       {
-#line 73
-	struct timeval	FullTime;
-#line 73
 
-#line 73
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 73
+
 	(start) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 73
+
 };
    if (MY_NUM_PARTICLES > 0) {
       ConstructLocalGrid(my_id);  /* Each processor constructs their own tree
@@ -102,70 +99,70 @@ ConstructGrid (long my_id, time_info *local_time, long time_all)
 				  communication between processors. */
    }
    {
-#line 81
+
 	unsigned long	Error, Cycle;
-#line 81
-	long		Cancel, Temp;
-#line 81
 
-#line 81
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(G_Memory->synch).mutex);
-#line 81
-	if (Error != 0) {
-#line 81
-		printf("Error while trying to get lock in barrier.\n");
-#line 81
-		exit(-1);
-#line 81
-	}
-#line 81
 
-#line 81
-	Cycle = (G_Memory->synch).cycle;
-#line 81
-	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
-#line 81
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 81
-		while (Cycle == (G_Memory->synch).cycle) {
-#line 81
-			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
-#line 81
-			if (Error != 0) {
-#line 81
-				break;
-#line 81
-			}
-#line 81
-		}
-#line 81
-		pthread_setcancelstate(Cancel, &Temp);
-#line 81
-	} else {
-#line 81
-		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
-#line 81
-		(G_Memory->synch).counter = 0;
-#line 81
-		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
-#line 81
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 81
+
+
+
+	Cycle = (G_Memory->synch).cycle;
+
+	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (G_Memory->synch).cycle) {
+
+			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
+
+		(G_Memory->synch).counter = 0;
+
+		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
+
+	}
+
 	pthread_mutex_unlock(&(G_Memory->synch).mutex);
-#line 81
+
 };
    CleanupGrid(my_id);
    if (time_all)
       {
-#line 84
-	struct timeval	FullTime;
-#line 84
 
-#line 84
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 84
+
 	(finish) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 84
+
 };
 
    if (time_all) {
@@ -182,82 +179,82 @@ ConstructLists (long my_id, time_info *local_time, long time_all)
 
    if (time_all)
       {
-#line 99
-	struct timeval	FullTime;
-#line 99
 
-#line 99
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 99
+
 	(start) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 99
+
 };
    PartitionIterate(my_id, ConstructGridLists, TOP);
    {
-#line 101
+
 	unsigned long	Error, Cycle;
-#line 101
-	long		Cancel, Temp;
-#line 101
 
-#line 101
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(G_Memory->synch).mutex);
-#line 101
-	if (Error != 0) {
-#line 101
-		printf("Error while trying to get lock in barrier.\n");
-#line 101
-		exit(-1);
-#line 101
-	}
-#line 101
 
-#line 101
-	Cycle = (G_Memory->synch).cycle;
-#line 101
-	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
-#line 101
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 101
-		while (Cycle == (G_Memory->synch).cycle) {
-#line 101
-			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
-#line 101
-			if (Error != 0) {
-#line 101
-				break;
-#line 101
-			}
-#line 101
-		}
-#line 101
-		pthread_setcancelstate(Cancel, &Temp);
-#line 101
-	} else {
-#line 101
-		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
-#line 101
-		(G_Memory->synch).counter = 0;
-#line 101
-		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
-#line 101
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 101
+
+
+
+	Cycle = (G_Memory->synch).cycle;
+
+	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (G_Memory->synch).cycle) {
+
+			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
+
+		(G_Memory->synch).counter = 0;
+
+		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
+
+	}
+
 	pthread_mutex_unlock(&(G_Memory->synch).mutex);
-#line 101
+
 };
    PartitionIterate(my_id, ConstructInteractionLists, BOTTOM);
    if (time_all)
       {
-#line 104
-	struct timeval	FullTime;
-#line 104
 
-#line 104
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 104
+
 	(finish) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 104
+
 };
 
    if (time_all) {
@@ -277,15 +274,15 @@ DestroyGrid (long my_id, time_info *local_time, long time_all)
 
    if (time_all)
       {
-#line 122
-	struct timeval	FullTime;
-#line 122
 
-#line 122
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 122
+
 	(start) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 122
+
 };
    b_scan = Local[my_id].Childless_Partition;
    MY_NUM_PARTICLES = 0;
@@ -307,15 +304,15 @@ DestroyGrid (long my_id, time_info *local_time, long time_all)
       Grid = NULL;
    if (time_all) {
       {
-#line 142
-	struct timeval	FullTime;
-#line 142
 
-#line 142
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 142
+
 	(finish) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 142
+
 };
       local_time[MY_TIME_STEP].other_time += finish - start;
    }
@@ -342,168 +339,168 @@ PrintGrid (long my_id)
       }
       fflush(stdout);
       {
-#line 167
+
 	unsigned long	Error, Cycle;
-#line 167
-	long		Cancel, Temp;
-#line 167
 
-#line 167
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(G_Memory->synch).mutex);
-#line 167
-	if (Error != 0) {
-#line 167
-		printf("Error while trying to get lock in barrier.\n");
-#line 167
-		exit(-1);
-#line 167
-	}
-#line 167
 
-#line 167
-	Cycle = (G_Memory->synch).cycle;
-#line 167
-	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
-#line 167
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 167
-		while (Cycle == (G_Memory->synch).cycle) {
-#line 167
-			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
-#line 167
-			if (Error != 0) {
-#line 167
-				break;
-#line 167
-			}
-#line 167
-		}
-#line 167
-		pthread_setcancelstate(Cancel, &Temp);
-#line 167
-	} else {
-#line 167
-		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
-#line 167
-		(G_Memory->synch).counter = 0;
-#line 167
-		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
-#line 167
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 167
+
+
+
+	Cycle = (G_Memory->synch).cycle;
+
+	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (G_Memory->synch).cycle) {
+
+			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
+
+		(G_Memory->synch).counter = 0;
+
+		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
+
+	}
+
 	pthread_mutex_unlock(&(G_Memory->synch).mutex);
-#line 167
+
 };
       PartitionIterate(my_id, PrintBox, TOP);
       {
-#line 169
+
 	unsigned long	Error, Cycle;
-#line 169
-	long		Cancel, Temp;
-#line 169
 
-#line 169
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(G_Memory->synch).mutex);
-#line 169
-	if (Error != 0) {
-#line 169
-		printf("Error while trying to get lock in barrier.\n");
-#line 169
-		exit(-1);
-#line 169
-	}
-#line 169
 
-#line 169
-	Cycle = (G_Memory->synch).cycle;
-#line 169
-	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
-#line 169
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 169
-		while (Cycle == (G_Memory->synch).cycle) {
-#line 169
-			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
-#line 169
-			if (Error != 0) {
-#line 169
-				break;
-#line 169
-			}
-#line 169
-		}
-#line 169
-		pthread_setcancelstate(Cancel, &Temp);
-#line 169
-	} else {
-#line 169
-		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
-#line 169
-		(G_Memory->synch).counter = 0;
-#line 169
-		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
-#line 169
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 169
+
+
+
+	Cycle = (G_Memory->synch).cycle;
+
+	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (G_Memory->synch).cycle) {
+
+			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
+
+		(G_Memory->synch).counter = 0;
+
+		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
+
+	}
+
 	pthread_mutex_unlock(&(G_Memory->synch).mutex);
-#line 169
+
 };
       if (my_id == 0) {
 	 printf("\n");
       }
       fflush(stdout);
       {
-#line 174
+
 	unsigned long	Error, Cycle;
-#line 174
-	long		Cancel, Temp;
-#line 174
 
-#line 174
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(G_Memory->synch).mutex);
-#line 174
-	if (Error != 0) {
-#line 174
-		printf("Error while trying to get lock in barrier.\n");
-#line 174
-		exit(-1);
-#line 174
-	}
-#line 174
 
-#line 174
-	Cycle = (G_Memory->synch).cycle;
-#line 174
-	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
-#line 174
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 174
-		while (Cycle == (G_Memory->synch).cycle) {
-#line 174
-			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
-#line 174
-			if (Error != 0) {
-#line 174
-				break;
-#line 174
-			}
-#line 174
-		}
-#line 174
-		pthread_setcancelstate(Cancel, &Temp);
-#line 174
-	} else {
-#line 174
-		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
-#line 174
-		(G_Memory->synch).counter = 0;
-#line 174
-		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
-#line 174
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 174
+
+
+
+	Cycle = (G_Memory->synch).cycle;
+
+	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (G_Memory->synch).cycle) {
+
+			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
+
+		(G_Memory->synch).counter = 0;
+
+		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
+
+	}
+
 	pthread_mutex_unlock(&(G_Memory->synch).mutex);
-#line 174
+
 };
    }
    else
@@ -599,57 +596,57 @@ MergeLocalGridSize (long my_id)
    my_f_array[2] = Local[my_id].Local_Y_Max;
    my_f_array[3] = Local[my_id].Local_Y_Min;
    {
-#line 268
+
 	unsigned long	Error, Cycle;
-#line 268
-	long		Cancel, Temp;
-#line 268
 
-#line 268
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(G_Memory->synch).mutex);
-#line 268
-	if (Error != 0) {
-#line 268
-		printf("Error while trying to get lock in barrier.\n");
-#line 268
-		exit(-1);
-#line 268
-	}
-#line 268
 
-#line 268
-	Cycle = (G_Memory->synch).cycle;
-#line 268
-	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
-#line 268
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 268
-		while (Cycle == (G_Memory->synch).cycle) {
-#line 268
-			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
-#line 268
-			if (Error != 0) {
-#line 268
-				break;
-#line 268
-			}
-#line 268
-		}
-#line 268
-		pthread_setcancelstate(Cancel, &Temp);
-#line 268
-	} else {
-#line 268
-		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
-#line 268
-		(G_Memory->synch).counter = 0;
-#line 268
-		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
-#line 268
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 268
+
+
+
+	Cycle = (G_Memory->synch).cycle;
+
+	if (++(G_Memory->synch).counter != (Number_Of_Processors)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (G_Memory->synch).cycle) {
+
+			Error = pthread_cond_wait(&(G_Memory->synch).cv, &(G_Memory->synch).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(G_Memory->synch).cycle = !(G_Memory->synch).cycle;
+
+		(G_Memory->synch).counter = 0;
+
+		Error = pthread_cond_broadcast(&(G_Memory->synch).cv);
+
+	}
+
 	pthread_mutex_unlock(&(G_Memory->synch).mutex);
-#line 268
+
 };
 
    for (i = 0; i < Number_Of_Processors; i++) {
@@ -685,7 +682,7 @@ InitGrid (long my_id)
 {
    real x_length, y_length;
    real grid_length, grid_x_center, grid_y_center;
-   long exp;
+   int exp;
    box *ret_box;
 
    frexp(Local[my_id].Local_X_Max, &exp);
