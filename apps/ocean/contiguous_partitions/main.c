@@ -96,7 +96,7 @@ double *f;
 double ****q_multi;
 double ****rhs_multi;
 
-long nprocs = DEFAULT_P;
+unsigned long nprocs = DEFAULT_P;
 double h1 = 1000.0;
 double h3 = 4000.0;
 double h = 5000.0;
@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
    j = (long) procsqrt;
    while ((xprocs == 0) && (j > 0)) {
      k = nprocs / j;
-     if (k * j == nprocs) {
+     if ((unsigned long)k * j == nprocs) {
        if (k > j) {
          xprocs = j;
          yprocs = k;
@@ -322,7 +322,7 @@ int main(int argc, char *argv[])
    temparray = (double ****) valloc(d_size);;
 
    d_size = 2*sizeof(double **);
-   for (i=0;i<nprocs;i++) {
+   for (i=0;(unsigned long)i<nprocs;i++) {
      psi[i] = (double ***) valloc(d_size);;
      psim[i] = (double ***) valloc(d_size);;
      work1[i] = (double ***) valloc(d_size);;
@@ -346,7 +346,7 @@ int main(int argc, char *argv[])
    oldgb = (double ***) valloc(d_size);;
 
    gp = (struct Global_Private *) valloc((nprocs+1)*sizeof(struct Global_Private));;
-   for (i=0;i<nprocs;i++) {
+   for (i=0;(unsigned long)i<nprocs;i++) {
      gp[i].rel_num_x = (long *) valloc(numlev*sizeof(long));;
      gp[i].rel_num_y = (long *) valloc(numlev*sizeof(long));;
      gp[i].eist = (long *) valloc(numlev*sizeof(long));;
@@ -369,7 +369,7 @@ int main(int argc, char *argv[])
    d_size = x_part*y_part*sizeof(double) + y_part*sizeof(double *);
 
    global = (struct global_struct *) valloc(sizeof(struct global_struct));;
-   for (i=0;i<nprocs;i++) {
+   for (i=0;(unsigned long)i<nprocs;i++) {
      psi[i][0] = (double **) valloc(d_size);;
      psi[i][1] = (double **) valloc(d_size);;
      psim[i][0] = (double **) valloc(d_size);;
@@ -1254,7 +1254,7 @@ int main(int argc, char *argv[])
 
 
 
-	for (i = 0; i < (nprocs) - 1; i++) {
+	for (i = 0; (unsigned long)i < (nprocs) - 1; i++) {
 
 		Error = pthread_create(&PThreadTable[i], NULL, (void * (*)(void *))(slave), NULL);
 
@@ -1314,7 +1314,7 @@ int main(int argc, char *argv[])
      min_total = max_total = avg_total = gp[0].total_time;
      min_multi = max_multi = avg_multi = gp[0].multi_time;
      min_frac = max_frac = avg_frac = gp[0].multi_time/gp[0].total_time;
-     for (i=1;i<nprocs;i++) {
+     for (i=1;(unsigned long)i<nprocs;i++) {
        if (gp[i].total_time > max_total) {
          max_total = gp[i].total_time;
        }
@@ -1340,7 +1340,7 @@ int main(int argc, char *argv[])
      avg_total = avg_total / nprocs;
      avg_multi = avg_multi / nprocs;
      avg_frac = avg_frac / nprocs;
-     for (i=1;i<nprocs;i++) {
+     for (i=1;(unsigned long)i<nprocs;i++) {
        printf("  %3ld   %15.0f    %15.0f        %10.3f\n", i,gp[i].total_time,gp[i].multi_time, gp[i].multi_time/gp[i].total_time);
      }
      printf("  Avg   %15.0f    %15.0f        %10.3f\n", avg_total,avg_multi,avg_frac);
@@ -1384,7 +1384,7 @@ long log_2(long number)
   }
 }
 
-void printerr(char *s)
+void printerr(const char *s)
 {
   fprintf(stderr,"ERROR: %s\n",s);
 }

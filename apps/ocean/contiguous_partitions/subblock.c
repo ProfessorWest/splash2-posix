@@ -33,9 +33,7 @@ void subblock()
    long j;
    long k;
    long xportion;
-   long xextra;
    long yportion;
-   long yextra;
    long my_num;
 
 /* Determine starting coord and number of points to process in     */
@@ -43,14 +41,14 @@ void subblock()
 
    for (i=0;i<numlev;i++) {
      xportion = (jmx[i] - 2) / xprocs;
-     xextra = (jmx[i] - 2) % xprocs;
+     //xextra = (jmx[i] - 2) % xprocs;
      for (j=0;j<xprocs;j++) {
        for (k=0;k<yprocs;k++) {
          gp[k*xprocs+j].rel_num_x[i] = xportion;
        }
      }
      yportion = (imx[i] - 2) / yprocs;
-     yextra = (imx[i] - 2) % yprocs;
+     //yextra = (imx[i] - 2) % yprocs;
      for (j=0;j<yprocs;j++) {
        for (k=0;k<xprocs;k++) {
          gp[j*xprocs+k].rel_num_y[i] = yportion;
@@ -58,7 +56,7 @@ void subblock()
      }
    }
 
-   for (my_num=0;my_num<nprocs;my_num++) {
+   for (my_num=0;(unsigned long)my_num<nprocs;my_num++) {
      for (i=0;i<numlev;i++) {
        gp[my_num].rlist[i] = 1;
        gp[my_num].rljst[i] = 1;
@@ -70,7 +68,7 @@ void subblock()
        gp[my_num].ojst[i] = gp[my_num].rljst[i];
      }
    }
-  for (i=0;i<nprocs;i++) {
+  for (i=0;(unsigned long)i<nprocs;i++) {
     gp[i].neighbors[LEFT] = -1;
     gp[i].neighbors[RIGHT] = -1;
     gp[i].neighbors[UP] = -1;
@@ -82,7 +80,7 @@ void subblock()
     if (i >= xprocs) {
       gp[i].neighbors[UP] = i-xprocs;
     }
-    if (i < nprocs-xprocs) {
+    if ((unsigned long)i < nprocs-xprocs) {
       gp[i].neighbors[DOWN] = i+xprocs;
     }
     if ((i % xprocs) > 0) {
@@ -110,7 +108,7 @@ void subblock()
       }
     }
   }
-  for (i=0;i<nprocs;i++) {
+  for (i=0;(unsigned long)i<nprocs;i++) {
     gp[i].rownum = i/xprocs;
     gp[i].colnum = i%xprocs;
   }

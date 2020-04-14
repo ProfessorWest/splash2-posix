@@ -69,7 +69,6 @@ void slave()
    double dhour;
    double day;
    long procid;
-   long psinum;
    long j_off = 0;
    unsigned long t1;
    double **t2a;
@@ -88,111 +87,111 @@ void slave()
 
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 84
+
 	unsigned long	Error, Cycle;
-#line 84
-	long		Cancel, Temp;
-#line 84
 
-#line 84
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_prini).mutex);
-#line 84
-	if (Error != 0) {
-#line 84
-		printf("Error while trying to get lock in barrier.\n");
-#line 84
-		exit(-1);
-#line 84
-	}
-#line 84
 
-#line 84
-	Cycle = (bars->sl_prini).cycle;
-#line 84
-	if (++(bars->sl_prini).counter != (nprocs)) {
-#line 84
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 84
-		while (Cycle == (bars->sl_prini).cycle) {
-#line 84
-			Error = pthread_cond_wait(&(bars->sl_prini).cv, &(bars->sl_prini).mutex);
-#line 84
-			if (Error != 0) {
-#line 84
-				break;
-#line 84
-			}
-#line 84
-		}
-#line 84
-		pthread_setcancelstate(Cancel, &Temp);
-#line 84
-	} else {
-#line 84
-		(bars->sl_prini).cycle = !(bars->sl_prini).cycle;
-#line 84
-		(bars->sl_prini).counter = 0;
-#line 84
-		Error = pthread_cond_broadcast(&(bars->sl_prini).cv);
-#line 84
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 84
+
+
+
+	Cycle = (bars->sl_prini).cycle;
+
+	if (++(bars->sl_prini).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_prini).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_prini).cv, &(bars->sl_prini).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_prini).cycle = !(bars->sl_prini).cycle;
+
+		(bars->sl_prini).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_prini).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_prini).mutex);
-#line 84
+
 }
 #else
    {
-#line 86
+
 	unsigned long	Error, Cycle;
-#line 86
-	long		Cancel, Temp;
-#line 86
 
-#line 86
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 86
-	if (Error != 0) {
-#line 86
-		printf("Error while trying to get lock in barrier.\n");
-#line 86
-		exit(-1);
-#line 86
-	}
-#line 86
 
-#line 86
-	Cycle = (bars->barrier).cycle;
-#line 86
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 86
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 86
-		while (Cycle == (bars->barrier).cycle) {
-#line 86
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 86
-			if (Error != 0) {
-#line 86
-				break;
-#line 86
-			}
-#line 86
-		}
-#line 86
-		pthread_setcancelstate(Cancel, &Temp);
-#line 86
-	} else {
-#line 86
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 86
-		(bars->barrier).counter = 0;
-#line 86
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 86
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 86
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 86
+
 }
 #endif
 /* POSSIBLE ENHANCEMENT:  Here is where one might pin processes to
@@ -293,11 +292,11 @@ eof(double) +
    numrows = gp[procid].rel_num_y[numlev-1];
    j_off = gp[procid].colnum*numcols;
 
-   if (procid > nprocs/2) {
-      psinum = 2;
-   } else {
-      psinum = 1;
-   }
+   //if (procid > nprocs/2) {
+      //psinum = 2;
+   //} else {
+      //psinum = 1;
+   //}
 
 /* every process gets its own copy of the timing variables to avoid
    contention at shared memory locations.  here, these variables
@@ -449,7 +448,7 @@ eof(double) +
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -503,7 +502,7 @@ eof(double) +
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -616,7 +615,7 @@ eof(double) +
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -670,7 +669,7 @@ eof(double) +
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -780,7 +779,7 @@ eof(double) +
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -834,7 +833,7 @@ eof(double) +
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -1101,7 +1100,7 @@ eof(double) +
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -1155,7 +1154,7 @@ eof(double) +
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 

@@ -71,111 +71,111 @@ void multig(long my_id)
 /* before proceeding with relaxation                               */
 #if defined(MULTIPLE_BARRIERS)
      {
-#line 67
+
 	unsigned long	Error, Cycle;
-#line 67
-	long		Cancel, Temp;
-#line 67
 
-#line 67
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->error_barrier).mutex);
-#line 67
-	if (Error != 0) {
-#line 67
-		printf("Error while trying to get lock in barrier.\n");
-#line 67
-		exit(-1);
-#line 67
-	}
-#line 67
 
-#line 67
-	Cycle = (bars->error_barrier).cycle;
-#line 67
-	if (++(bars->error_barrier).counter != (nprocs)) {
-#line 67
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 67
-		while (Cycle == (bars->error_barrier).cycle) {
-#line 67
-			Error = pthread_cond_wait(&(bars->error_barrier).cv, &(bars->error_barrier).mutex);
-#line 67
-			if (Error != 0) {
-#line 67
-				break;
-#line 67
-			}
-#line 67
-		}
-#line 67
-		pthread_setcancelstate(Cancel, &Temp);
-#line 67
-	} else {
-#line 67
-		(bars->error_barrier).cycle = !(bars->error_barrier).cycle;
-#line 67
-		(bars->error_barrier).counter = 0;
-#line 67
-		Error = pthread_cond_broadcast(&(bars->error_barrier).cv);
-#line 67
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 67
+
+
+
+	Cycle = (bars->error_barrier).cycle;
+
+	if (++(bars->error_barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->error_barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->error_barrier).cv, &(bars->error_barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->error_barrier).cycle = !(bars->error_barrier).cycle;
+
+		(bars->error_barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->error_barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->error_barrier).mutex);
-#line 67
+
 }
 #else
      {
-#line 69
+
 	unsigned long	Error, Cycle;
-#line 69
-	long		Cancel, Temp;
-#line 69
 
-#line 69
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 69
-	if (Error != 0) {
-#line 69
-		printf("Error while trying to get lock in barrier.\n");
-#line 69
-		exit(-1);
-#line 69
-	}
-#line 69
 
-#line 69
-	Cycle = (bars->barrier).cycle;
-#line 69
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 69
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 69
-		while (Cycle == (bars->barrier).cycle) {
-#line 69
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 69
-			if (Error != 0) {
-#line 69
-				break;
-#line 69
-			}
-#line 69
-		}
-#line 69
-		pthread_setcancelstate(Cancel, &Temp);
-#line 69
-	} else {
-#line 69
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 69
-		(bars->barrier).counter = 0;
-#line 69
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 69
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 69
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 69
+
 }
 #endif
      copy_black(k,my_num);
@@ -185,111 +185,111 @@ void multig(long my_id)
 /* barrier to make sure all red computations have been performed   */
 #if defined(MULTIPLE_BARRIERS)
      {
-#line 77
+
 	unsigned long	Error, Cycle;
-#line 77
-	long		Cancel, Temp;
-#line 77
 
-#line 77
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->error_barrier).mutex);
-#line 77
-	if (Error != 0) {
-#line 77
-		printf("Error while trying to get lock in barrier.\n");
-#line 77
-		exit(-1);
-#line 77
-	}
-#line 77
 
-#line 77
-	Cycle = (bars->error_barrier).cycle;
-#line 77
-	if (++(bars->error_barrier).counter != (nprocs)) {
-#line 77
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 77
-		while (Cycle == (bars->error_barrier).cycle) {
-#line 77
-			Error = pthread_cond_wait(&(bars->error_barrier).cv, &(bars->error_barrier).mutex);
-#line 77
-			if (Error != 0) {
-#line 77
-				break;
-#line 77
-			}
-#line 77
-		}
-#line 77
-		pthread_setcancelstate(Cancel, &Temp);
-#line 77
-	} else {
-#line 77
-		(bars->error_barrier).cycle = !(bars->error_barrier).cycle;
-#line 77
-		(bars->error_barrier).counter = 0;
-#line 77
-		Error = pthread_cond_broadcast(&(bars->error_barrier).cv);
-#line 77
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 77
+
+
+
+	Cycle = (bars->error_barrier).cycle;
+
+	if (++(bars->error_barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->error_barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->error_barrier).cv, &(bars->error_barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->error_barrier).cycle = !(bars->error_barrier).cycle;
+
+		(bars->error_barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->error_barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->error_barrier).mutex);
-#line 77
+
 }
 #else
      {
-#line 79
+
 	unsigned long	Error, Cycle;
-#line 79
-	long		Cancel, Temp;
-#line 79
 
-#line 79
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 79
-	if (Error != 0) {
-#line 79
-		printf("Error while trying to get lock in barrier.\n");
-#line 79
-		exit(-1);
-#line 79
-	}
-#line 79
 
-#line 79
-	Cycle = (bars->barrier).cycle;
-#line 79
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 79
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 79
-		while (Cycle == (bars->barrier).cycle) {
-#line 79
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 79
-			if (Error != 0) {
-#line 79
-				break;
-#line 79
-			}
-#line 79
-		}
-#line 79
-		pthread_setcancelstate(Cancel, &Temp);
-#line 79
-	} else {
-#line 79
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 79
-		(bars->barrier).counter = 0;
-#line 79
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 79
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 79
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 79
+
 }
 #endif
      copy_red(k,my_num);
@@ -323,7 +323,7 @@ void multig(long my_id)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -377,7 +377,7 @@ void multig(long my_id)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -436,7 +436,7 @@ void multig(long my_id)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -490,7 +490,7 @@ void multig(long my_id)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -566,7 +566,7 @@ void multig(long my_id)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -620,7 +620,7 @@ void multig(long my_id)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -843,7 +843,6 @@ void rescal(long kf, long my_num)
    long jstart;
    long jend;
    double hf;
-   double hc;
    double s;
    double s1;
    double s2;
@@ -854,7 +853,6 @@ void rescal(long kf, long my_num)
    double int2;
    double i_int_factor;
    double j_int_factor;
-   double int_val;
    long i_off;
    long j_off;
    long up_proc;
@@ -876,7 +874,7 @@ void rescal(long kf, long my_num)
    double *t1h;
 
    krc = kf - 1;
-   hc = lev_res[krc];
+   //hc = lev_res[krc];
    hf = lev_res[kf];
    i_off = gp[my_num].rownum*ypts_per_proc[krc];
    j_off = gp[my_num].colnum*xpts_per_proc[krc];
@@ -959,7 +957,7 @@ void rescal(long kf, long my_num)
        }
        int1 = j_int_factor*s4 + (1.0-j_int_factor)*s3;
        int2 = j_int_factor*s2 + (1.0-j_int_factor)*s1;
-       int_val = i_int_factor*int1+(1.0-i_int_factor)*int2;
+       //int_val = i_int_factor*int1+(1.0-i_int_factor)*int2;
        t1c[jc] = i_int_factor*int1+(1.0-i_int_factor)*int2;
      }
    }
@@ -977,8 +975,6 @@ void intadd(long kc, long my_num)
    long jstart;
    long iend;
    long jend;
-   double hc;
-   double hf;
    double int1;
    double int2;
    double i_int_factor1;
@@ -996,8 +992,8 @@ void intadd(long kc, long my_num)
    double *t1e;
 
    kf = kc + 1;
-   hc = lev_res[kc];
-   hf = lev_res[kf];
+   //hc = lev_res[kc];
+   //hf = lev_res[kf];
 
    istart = gp[my_num].rlist[kc];
    jstart = gp[my_num].rljst[kc];

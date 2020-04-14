@@ -32,7 +32,7 @@ void link_all()
   long i;
   long j;
 
-  for (j=0;j<nprocs;j++) {
+  for (j=0;(unsigned long)j<nprocs;j++) {
     linkup(psium[j]);
     linkup(psilm[j]);
     linkup(psib[j]);
@@ -110,11 +110,11 @@ void link_multi()
     d_size += ((imx[i]-2)/yprocs+2)*((jmx[i]-2)/xprocs+2)*sizeof(double)+
              ((imx[i]-2)/yprocs+2)*sizeof(double *);
   }
-  for (i=0;i<nprocs;i++) {
+  for (i=0;(unsigned long)i<nprocs;i++) {
     q_multi[i] = (double ***) z;
     z += d_size;
   }
-  for (j=0;j<nprocs;j++) {
+  for (j=0;(unsigned long)j<nprocs;j++) {
     zz = (unsigned long) q_multi[j];
     zz += numlev*sizeof(double **);
     if (numlev%2 == 1) {       /* To make sure that the actual data
@@ -133,7 +133,7 @@ void link_multi()
   for (l=0;l<numlev;l++) {
     x_part = (jmx[l]-2)/xprocs + 2;
     y_part = (imx[l]-2)/yprocs + 2;
-    for (j=0;j<nprocs;j++) {
+    for (j=0;(unsigned long)j<nprocs;j++) {
       row = q_multi[j][l];
       y = row + y_part;
       a = (double *) y;
@@ -162,11 +162,11 @@ void link_multi()
     d_size += ((imx[i]-2)/yprocs+2)*((jmx[i]-2)/xprocs+2)*sizeof(double)+
              ((imx[i]-2)/yprocs+2)*sizeof(double *);
   }
-  for (i=0;i<nprocs;i++) {
+  for (i=0;(unsigned long)i<nprocs;i++) {
     rhs_multi[i] = (double ***) z;
     z += d_size;
   }
-  for (j=0;j<nprocs;j++) {
+  for (j=0;(unsigned long)j<nprocs;j++) {
     zz = (unsigned long) rhs_multi[j];
     zz += numlev*sizeof(double **);
     if (numlev%2 == 1) {       /* To make sure that the actual data
@@ -185,7 +185,7 @@ void link_multi()
   for (l=0;l<numlev;l++) {
     x_part = (jmx[l]-2)/xprocs + 2;
     y_part = (imx[l]-2)/yprocs + 2;
-    for (j=0;j<nprocs;j++) {
+    for (j=0;(unsigned long)j<nprocs;j++) {
       row = rhs_multi[j][l];
       y = row + y_part;
       a = (double *) y;
