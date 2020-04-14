@@ -65,7 +65,7 @@ struct locks_struct *locks;
 struct bars_struct *bars;
 
 long startcol[2][INPROCS];
-long nprocs = DEFAULT_P;
+unsigned long nprocs = DEFAULT_P;
 long startrow[2][INPROCS];
 double h1 = 1000.0;
 double h3 = 4000.0;
@@ -136,15 +136,15 @@ int main(int argc, char *argv[])
    unsigned long start;
 
    {
-#line 132
-	struct timeval	FullTime;
-#line 132
 
-#line 132
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 132
+
 	(start) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 132
+
 }
 
    while ((ch = getopt(argc, argv, "n:p:e:r:t:soh")) != -1) {
@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
    printf("\n");
 
    gp = (struct Global_Private *) valloc((nprocs+1)*sizeof(struct Global_Private));;
-   for (i=0;i<nprocs;i++) {
+   for (i=0;(unsigned long)i<nprocs;i++) {
      gp[i].multi_time = 0;
      gp[i].total_time = 0;
    }
@@ -249,782 +249,782 @@ int main(int argc, char *argv[])
 
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 235
-	unsigned long	Error;
-#line 235
 
-#line 235
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->iteration).mutex, NULL);
-#line 235
-	if (Error != 0) {
-#line 235
-		printf("Error while initializing barrier.\n");
-#line 235
-		exit(-1);
-#line 235
-	}
-#line 235
 
-#line 235
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->iteration).cv, NULL);
-#line 235
+
 	if (Error != 0) {
-#line 235
+
 		printf("Error while initializing barrier.\n");
-#line 235
+
 		pthread_mutex_destroy(&(bars->iteration).mutex);
-#line 235
-		exit(-1);
-#line 235
-	}
-#line 235
 
-#line 235
+		exit(-1);
+
+	}
+
+
+
 	(bars->iteration).counter = 0;
-#line 235
+
 	(bars->iteration).cycle = 0;
-#line 235
+
 }
    {
-#line 236
-	unsigned long	Error;
-#line 236
 
-#line 236
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->gsudn).mutex, NULL);
-#line 236
-	if (Error != 0) {
-#line 236
-		printf("Error while initializing barrier.\n");
-#line 236
-		exit(-1);
-#line 236
-	}
-#line 236
 
-#line 236
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->gsudn).cv, NULL);
-#line 236
+
 	if (Error != 0) {
-#line 236
+
 		printf("Error while initializing barrier.\n");
-#line 236
+
 		pthread_mutex_destroy(&(bars->gsudn).mutex);
-#line 236
-		exit(-1);
-#line 236
-	}
-#line 236
 
-#line 236
+		exit(-1);
+
+	}
+
+
+
 	(bars->gsudn).counter = 0;
-#line 236
+
 	(bars->gsudn).cycle = 0;
-#line 236
+
 }
    {
-#line 237
-	unsigned long	Error;
-#line 237
 
-#line 237
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->p_setup).mutex, NULL);
-#line 237
-	if (Error != 0) {
-#line 237
-		printf("Error while initializing barrier.\n");
-#line 237
-		exit(-1);
-#line 237
-	}
-#line 237
 
-#line 237
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->p_setup).cv, NULL);
-#line 237
+
 	if (Error != 0) {
-#line 237
+
 		printf("Error while initializing barrier.\n");
-#line 237
+
 		pthread_mutex_destroy(&(bars->p_setup).mutex);
-#line 237
-		exit(-1);
-#line 237
-	}
-#line 237
 
-#line 237
+		exit(-1);
+
+	}
+
+
+
 	(bars->p_setup).counter = 0;
-#line 237
+
 	(bars->p_setup).cycle = 0;
-#line 237
+
 }
    {
-#line 238
-	unsigned long	Error;
-#line 238
 
-#line 238
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->p_redph).mutex, NULL);
-#line 238
-	if (Error != 0) {
-#line 238
-		printf("Error while initializing barrier.\n");
-#line 238
-		exit(-1);
-#line 238
-	}
-#line 238
 
-#line 238
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->p_redph).cv, NULL);
-#line 238
+
 	if (Error != 0) {
-#line 238
+
 		printf("Error while initializing barrier.\n");
-#line 238
+
 		pthread_mutex_destroy(&(bars->p_redph).mutex);
-#line 238
-		exit(-1);
-#line 238
-	}
-#line 238
 
-#line 238
+		exit(-1);
+
+	}
+
+
+
 	(bars->p_redph).counter = 0;
-#line 238
+
 	(bars->p_redph).cycle = 0;
-#line 238
+
 }
    {
-#line 239
-	unsigned long	Error;
-#line 239
 
-#line 239
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->p_soln).mutex, NULL);
-#line 239
-	if (Error != 0) {
-#line 239
-		printf("Error while initializing barrier.\n");
-#line 239
-		exit(-1);
-#line 239
-	}
-#line 239
 
-#line 239
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->p_soln).cv, NULL);
-#line 239
+
 	if (Error != 0) {
-#line 239
+
 		printf("Error while initializing barrier.\n");
-#line 239
+
 		pthread_mutex_destroy(&(bars->p_soln).mutex);
-#line 239
-		exit(-1);
-#line 239
-	}
-#line 239
 
-#line 239
+		exit(-1);
+
+	}
+
+
+
 	(bars->p_soln).counter = 0;
-#line 239
+
 	(bars->p_soln).cycle = 0;
-#line 239
+
 }
    {
-#line 240
-	unsigned long	Error;
-#line 240
 
-#line 240
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->p_subph).mutex, NULL);
-#line 240
-	if (Error != 0) {
-#line 240
-		printf("Error while initializing barrier.\n");
-#line 240
-		exit(-1);
-#line 240
-	}
-#line 240
 
-#line 240
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->p_subph).cv, NULL);
-#line 240
+
 	if (Error != 0) {
-#line 240
+
 		printf("Error while initializing barrier.\n");
-#line 240
+
 		pthread_mutex_destroy(&(bars->p_subph).mutex);
-#line 240
-		exit(-1);
-#line 240
-	}
-#line 240
 
-#line 240
+		exit(-1);
+
+	}
+
+
+
 	(bars->p_subph).counter = 0;
-#line 240
+
 	(bars->p_subph).cycle = 0;
-#line 240
+
 }
    {
-#line 241
-	unsigned long	Error;
-#line 241
 
-#line 241
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_prini).mutex, NULL);
-#line 241
-	if (Error != 0) {
-#line 241
-		printf("Error while initializing barrier.\n");
-#line 241
-		exit(-1);
-#line 241
-	}
-#line 241
 
-#line 241
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_prini).cv, NULL);
-#line 241
+
 	if (Error != 0) {
-#line 241
+
 		printf("Error while initializing barrier.\n");
-#line 241
+
 		pthread_mutex_destroy(&(bars->sl_prini).mutex);
-#line 241
-		exit(-1);
-#line 241
-	}
-#line 241
 
-#line 241
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_prini).counter = 0;
-#line 241
+
 	(bars->sl_prini).cycle = 0;
-#line 241
+
 }
    {
-#line 242
-	unsigned long	Error;
-#line 242
 
-#line 242
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_psini).mutex, NULL);
-#line 242
-	if (Error != 0) {
-#line 242
-		printf("Error while initializing barrier.\n");
-#line 242
-		exit(-1);
-#line 242
-	}
-#line 242
 
-#line 242
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_psini).cv, NULL);
-#line 242
+
 	if (Error != 0) {
-#line 242
+
 		printf("Error while initializing barrier.\n");
-#line 242
+
 		pthread_mutex_destroy(&(bars->sl_psini).mutex);
-#line 242
-		exit(-1);
-#line 242
-	}
-#line 242
 
-#line 242
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_psini).counter = 0;
-#line 242
+
 	(bars->sl_psini).cycle = 0;
-#line 242
+
 }
    {
-#line 243
-	unsigned long	Error;
-#line 243
 
-#line 243
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_onetime).mutex, NULL);
-#line 243
-	if (Error != 0) {
-#line 243
-		printf("Error while initializing barrier.\n");
-#line 243
-		exit(-1);
-#line 243
-	}
-#line 243
 
-#line 243
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_onetime).cv, NULL);
-#line 243
+
 	if (Error != 0) {
-#line 243
+
 		printf("Error while initializing barrier.\n");
-#line 243
+
 		pthread_mutex_destroy(&(bars->sl_onetime).mutex);
-#line 243
-		exit(-1);
-#line 243
-	}
-#line 243
 
-#line 243
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_onetime).counter = 0;
-#line 243
+
 	(bars->sl_onetime).cycle = 0;
-#line 243
+
 }
    {
-#line 244
-	unsigned long	Error;
-#line 244
 
-#line 244
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_1).mutex, NULL);
-#line 244
-	if (Error != 0) {
-#line 244
-		printf("Error while initializing barrier.\n");
-#line 244
-		exit(-1);
-#line 244
-	}
-#line 244
 
-#line 244
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_1).cv, NULL);
-#line 244
+
 	if (Error != 0) {
-#line 244
+
 		printf("Error while initializing barrier.\n");
-#line 244
+
 		pthread_mutex_destroy(&(bars->sl_phase_1).mutex);
-#line 244
-		exit(-1);
-#line 244
-	}
-#line 244
 
-#line 244
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_1).counter = 0;
-#line 244
+
 	(bars->sl_phase_1).cycle = 0;
-#line 244
+
 }
    {
-#line 245
-	unsigned long	Error;
-#line 245
 
-#line 245
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_2).mutex, NULL);
-#line 245
-	if (Error != 0) {
-#line 245
-		printf("Error while initializing barrier.\n");
-#line 245
-		exit(-1);
-#line 245
-	}
-#line 245
 
-#line 245
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_2).cv, NULL);
-#line 245
+
 	if (Error != 0) {
-#line 245
+
 		printf("Error while initializing barrier.\n");
-#line 245
+
 		pthread_mutex_destroy(&(bars->sl_phase_2).mutex);
-#line 245
-		exit(-1);
-#line 245
-	}
-#line 245
 
-#line 245
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_2).counter = 0;
-#line 245
+
 	(bars->sl_phase_2).cycle = 0;
-#line 245
+
 }
    {
-#line 246
-	unsigned long	Error;
-#line 246
 
-#line 246
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_3).mutex, NULL);
-#line 246
-	if (Error != 0) {
-#line 246
-		printf("Error while initializing barrier.\n");
-#line 246
-		exit(-1);
-#line 246
-	}
-#line 246
 
-#line 246
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_3).cv, NULL);
-#line 246
+
 	if (Error != 0) {
-#line 246
+
 		printf("Error while initializing barrier.\n");
-#line 246
+
 		pthread_mutex_destroy(&(bars->sl_phase_3).mutex);
-#line 246
-		exit(-1);
-#line 246
-	}
-#line 246
 
-#line 246
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_3).counter = 0;
-#line 246
+
 	(bars->sl_phase_3).cycle = 0;
-#line 246
+
 }
    {
-#line 247
-	unsigned long	Error;
-#line 247
 
-#line 247
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_4).mutex, NULL);
-#line 247
-	if (Error != 0) {
-#line 247
-		printf("Error while initializing barrier.\n");
-#line 247
-		exit(-1);
-#line 247
-	}
-#line 247
 
-#line 247
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_4).cv, NULL);
-#line 247
+
 	if (Error != 0) {
-#line 247
+
 		printf("Error while initializing barrier.\n");
-#line 247
+
 		pthread_mutex_destroy(&(bars->sl_phase_4).mutex);
-#line 247
-		exit(-1);
-#line 247
-	}
-#line 247
 
-#line 247
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_4).counter = 0;
-#line 247
+
 	(bars->sl_phase_4).cycle = 0;
-#line 247
+
 }
    {
-#line 248
-	unsigned long	Error;
-#line 248
 
-#line 248
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_5).mutex, NULL);
-#line 248
-	if (Error != 0) {
-#line 248
-		printf("Error while initializing barrier.\n");
-#line 248
-		exit(-1);
-#line 248
-	}
-#line 248
 
-#line 248
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_5).cv, NULL);
-#line 248
+
 	if (Error != 0) {
-#line 248
+
 		printf("Error while initializing barrier.\n");
-#line 248
+
 		pthread_mutex_destroy(&(bars->sl_phase_5).mutex);
-#line 248
-		exit(-1);
-#line 248
-	}
-#line 248
 
-#line 248
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_5).counter = 0;
-#line 248
+
 	(bars->sl_phase_5).cycle = 0;
-#line 248
+
 }
    {
-#line 249
-	unsigned long	Error;
-#line 249
 
-#line 249
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_6).mutex, NULL);
-#line 249
-	if (Error != 0) {
-#line 249
-		printf("Error while initializing barrier.\n");
-#line 249
-		exit(-1);
-#line 249
-	}
-#line 249
 
-#line 249
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_6).cv, NULL);
-#line 249
+
 	if (Error != 0) {
-#line 249
+
 		printf("Error while initializing barrier.\n");
-#line 249
+
 		pthread_mutex_destroy(&(bars->sl_phase_6).mutex);
-#line 249
-		exit(-1);
-#line 249
-	}
-#line 249
 
-#line 249
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_6).counter = 0;
-#line 249
+
 	(bars->sl_phase_6).cycle = 0;
-#line 249
+
 }
    {
-#line 250
-	unsigned long	Error;
-#line 250
 
-#line 250
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_7).mutex, NULL);
-#line 250
-	if (Error != 0) {
-#line 250
-		printf("Error while initializing barrier.\n");
-#line 250
-		exit(-1);
-#line 250
-	}
-#line 250
 
-#line 250
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_7).cv, NULL);
-#line 250
+
 	if (Error != 0) {
-#line 250
+
 		printf("Error while initializing barrier.\n");
-#line 250
+
 		pthread_mutex_destroy(&(bars->sl_phase_7).mutex);
-#line 250
-		exit(-1);
-#line 250
-	}
-#line 250
 
-#line 250
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_7).counter = 0;
-#line 250
+
 	(bars->sl_phase_7).cycle = 0;
-#line 250
+
 }
    {
-#line 251
-	unsigned long	Error;
-#line 251
 
-#line 251
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_8).mutex, NULL);
-#line 251
-	if (Error != 0) {
-#line 251
-		printf("Error while initializing barrier.\n");
-#line 251
-		exit(-1);
-#line 251
-	}
-#line 251
 
-#line 251
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_8).cv, NULL);
-#line 251
+
 	if (Error != 0) {
-#line 251
+
 		printf("Error while initializing barrier.\n");
-#line 251
+
 		pthread_mutex_destroy(&(bars->sl_phase_8).mutex);
-#line 251
-		exit(-1);
-#line 251
-	}
-#line 251
 
-#line 251
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_8).counter = 0;
-#line 251
+
 	(bars->sl_phase_8).cycle = 0;
-#line 251
+
 }
    {
-#line 252
-	unsigned long	Error;
-#line 252
 
-#line 252
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_9).mutex, NULL);
-#line 252
-	if (Error != 0) {
-#line 252
-		printf("Error while initializing barrier.\n");
-#line 252
-		exit(-1);
-#line 252
-	}
-#line 252
 
-#line 252
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_9).cv, NULL);
-#line 252
+
 	if (Error != 0) {
-#line 252
+
 		printf("Error while initializing barrier.\n");
-#line 252
+
 		pthread_mutex_destroy(&(bars->sl_phase_9).mutex);
-#line 252
-		exit(-1);
-#line 252
-	}
-#line 252
 
-#line 252
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_9).counter = 0;
-#line 252
+
 	(bars->sl_phase_9).cycle = 0;
-#line 252
+
 }
    {
-#line 253
-	unsigned long	Error;
-#line 253
 
-#line 253
+	unsigned long	Error;
+
+
+
 	Error = pthread_mutex_init(&(bars->sl_phase_10).mutex, NULL);
-#line 253
-	if (Error != 0) {
-#line 253
-		printf("Error while initializing barrier.\n");
-#line 253
-		exit(-1);
-#line 253
-	}
-#line 253
 
-#line 253
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->sl_phase_10).cv, NULL);
-#line 253
-	if (Error != 0) {
-#line 253
-		printf("Error while initializing barrier.\n");
-#line 253
-		pthread_mutex_destroy(&(bars->sl_phase_10).mutex);
-#line 253
-		exit(-1);
-#line 253
-	}
-#line 253
 
-#line 253
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		pthread_mutex_destroy(&(bars->sl_phase_10).mutex);
+
+		exit(-1);
+
+	}
+
+
+
 	(bars->sl_phase_10).counter = 0;
-#line 253
+
 	(bars->sl_phase_10).cycle = 0;
-#line 253
+
 }
    {
-#line 254
+
 	unsigned long	Error;
-#line 254
 
-#line 254
+
+
 	Error = pthread_mutex_init(&(bars->error_barrier).mutex, NULL);
-#line 254
-	if (Error != 0) {
-#line 254
-		printf("Error while initializing barrier.\n");
-#line 254
-		exit(-1);
-#line 254
-	}
-#line 254
 
-#line 254
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->error_barrier).cv, NULL);
-#line 254
-	if (Error != 0) {
-#line 254
-		printf("Error while initializing barrier.\n");
-#line 254
-		pthread_mutex_destroy(&(bars->error_barrier).mutex);
-#line 254
-		exit(-1);
-#line 254
-	}
-#line 254
 
-#line 254
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		pthread_mutex_destroy(&(bars->error_barrier).mutex);
+
+		exit(-1);
+
+	}
+
+
+
 	(bars->error_barrier).counter = 0;
-#line 254
+
 	(bars->error_barrier).cycle = 0;
-#line 254
+
 }
 #else
    {
-#line 256
+
 	unsigned long	Error;
-#line 256
 
-#line 256
+
+
 	Error = pthread_mutex_init(&(bars->barrier).mutex, NULL);
-#line 256
-	if (Error != 0) {
-#line 256
-		printf("Error while initializing barrier.\n");
-#line 256
-		exit(-1);
-#line 256
-	}
-#line 256
 
-#line 256
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		exit(-1);
+
+	}
+
+
+
 	Error = pthread_cond_init(&(bars->barrier).cv, NULL);
-#line 256
-	if (Error != 0) {
-#line 256
-		printf("Error while initializing barrier.\n");
-#line 256
-		pthread_mutex_destroy(&(bars->barrier).mutex);
-#line 256
-		exit(-1);
-#line 256
-	}
-#line 256
 
-#line 256
+	if (Error != 0) {
+
+		printf("Error while initializing barrier.\n");
+
+		pthread_mutex_destroy(&(bars->barrier).mutex);
+
+		exit(-1);
+
+	}
+
+
+
 	(bars->barrier).counter = 0;
-#line 256
+
 	(bars->barrier).cycle = 0;
-#line 256
+
 }
 #endif
 
@@ -1034,7 +1034,7 @@ int main(int argc, char *argv[])
    lev_tol[numlev-1] = tolerance;
    multi->err_multi = 0.0;
    multi->numspin = 0;
-   for (i=0;i<nprocs;i++) {
+   for (i=0;(unsigned long)i<nprocs;i++) {
      multi->spinflag[i] = 0;
    }
 
@@ -1050,7 +1050,7 @@ int main(int argc, char *argv[])
    j = (long) procsqrt;
    while ((xprocs == 0) && (j > 0)) {
      k = nprocs / j;
-     if (k * j == nprocs) {
+     if ((unsigned long)k * j == nprocs) {
        if (k > j) {
          xprocs = j;
          yprocs = k;
@@ -1125,7 +1125,7 @@ int main(int argc, char *argv[])
      j_int_coeff[i] = 1.0/(jmx[i]-1);
    }
 
-   for (my_num=0;my_num<nprocs;my_num++) {
+   for (my_num=0;(unsigned long)my_num<nprocs;my_num++) {
      for (i=0;i<numlev;i++) {
        gp[my_num].rlist[i] = gp[my_num].rel_start_y[i];
        gp[my_num].rljst[i] = gp[my_num].rel_start_x[i];
@@ -1217,59 +1217,59 @@ int main(int argc, char *argv[])
    }
 
    {
-#line 447
+
 	long	i, Error;
-#line 447
 
-#line 447
-	for (i = 0; i < (nprocs) - 1; i++) {
-#line 447
+
+
+	for (i = 0; (unsigned long)i < (nprocs) - 1; i++) {
+
 		Error = pthread_create(&PThreadTable[i], NULL, (void * (*)(void *))(slave), NULL);
-#line 447
+
 		if (Error != 0) {
-#line 447
+
 			printf("Error in pthread_create().\n");
-#line 447
-			exit(-1);
-#line 447
-		}
-#line 447
-	}
-#line 447
 
-#line 447
+			exit(-1);
+
+		}
+
+	}
+
+
+
 	slave();
-#line 447
-};
-   {
-#line 448
-	unsigned long	i, Error;
-#line 448
-	for (i = 0; i < (nprocs) - 1; i++) {
-#line 448
-		Error = pthread_join(PThreadTable[i], NULL);
-#line 448
-		if (Error != 0) {
-#line 448
-			printf("Error in pthread_join().\n");
-#line 448
-			exit(-1);
-#line 448
-		}
-#line 448
-	}
-#line 448
-};
-   {
-#line 449
-	struct timeval	FullTime;
-#line 449
 
-#line 449
+};
+   {
+
+	unsigned long	i, Error;
+
+	for (i = 0; i < (nprocs) - 1; i++) {
+
+		Error = pthread_join(PThreadTable[i], NULL);
+
+		if (Error != 0) {
+
+			printf("Error in pthread_join().\n");
+
+			exit(-1);
+
+		}
+
+	}
+
+};
+   {
+
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 449
+
 	(computeend) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 449
+
 }
 
    printf("\n");
@@ -1282,7 +1282,7 @@ int main(int argc, char *argv[])
      min_total = max_total = avg_total = gp[0].total_time;
      min_multi = max_multi = avg_multi = gp[0].multi_time;
      min_frac = max_frac = avg_frac = gp[0].multi_time/gp[0].total_time;
-     for (i=1;i<nprocs;i++) {
+     for (i=1;(unsigned long)i<nprocs;i++) {
        if (gp[i].total_time > max_total) {
          max_total = gp[i].total_time;
        }
@@ -1308,7 +1308,7 @@ int main(int argc, char *argv[])
      avg_total = avg_total / nprocs;
      avg_multi = avg_multi / nprocs;
      avg_frac = avg_frac / nprocs;
-     for (i=1;i<nprocs;i++) {
+     for (i=1;(unsigned long)i<nprocs;i++) {
        printf("  %3ld   %15.0f    %15.0f        %10.3f\n", i, gp[i].total_time, gp[i].multi_time, gp[i].multi_time/gp[i].total_time);
      }
      printf("  Avg   %15.0f    %15.0f        %10.3f\n", avg_total,avg_multi,avg_frac);
@@ -1352,7 +1352,7 @@ long log_2(long number)
   }
 }
 
-void printerr(char *s)
+void printerr(const char *s)
 {
   fprintf(stderr,"ERROR: %s\n",s);
 }

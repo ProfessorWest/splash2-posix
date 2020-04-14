@@ -43,13 +43,13 @@ void jacobcalc(double x[IMAX][JMAX], double y[IMAX][JMAX], double z[IMAX][JMAX],
    if (pid == MASTER) {
      z[0][0]=0.0;
    }
-   if (pid == nprocs-xprocs) {
+   if ((unsigned long)pid == nprocs-xprocs) {
      z[im-1][0]=0.0;
    }
    if (pid == xprocs-1) {
      z[0][jm-1]=0.0;
    }
-   if (pid == nprocs-1) {
+   if ((unsigned long)pid == nprocs-1) {
      z[im-1][jm-1]=0.0;
    }
    for (iindex=firstcol;iindex<=lastcol;iindex++) {

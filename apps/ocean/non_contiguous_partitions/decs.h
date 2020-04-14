@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "decs.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -27,18 +24,16 @@
 #define PAGE_SIZE    4096
 
 
-#line 26
-#include <pthread.h>
-#line 26
-#include <sys/time.h>
-#line 26
-#include <unistd.h>
-#line 26
-#include <stdlib.h>
-#line 26
-extern pthread_t PThreadTable[];
-#line 26
 
+#include <pthread.h>
+
+#include <sys/time.h>
+
+#include <unistd.h>
+
+#include <stdlib.h>
+
+extern pthread_t PThreadTable[];
 
 struct global_struct {
    long id;
@@ -112,331 +107,331 @@ struct multi_struct {
 };
 
 struct locks_struct {
-   pthread_mutex_t (idlock);
-   pthread_mutex_t (psiailock);
-   pthread_mutex_t (psibilock);
-   pthread_mutex_t (donelock);
-   pthread_mutex_t (error_lock);
-   pthread_mutex_t (bar_lock);
+   pthread_mutex_t idlock;
+   pthread_mutex_t psiailock;
+   pthread_mutex_t psibilock;
+   pthread_mutex_t donelock;
+   pthread_mutex_t error_lock;
+   pthread_mutex_t bar_lock;
 };
 
 struct bars_struct {
 #if defined(MULTIPLE_BARRIERS)
    
-#line 110
+
 struct {
-#line 110
+
 	pthread_mutex_t	mutex;
-#line 110
+
 	pthread_cond_t	cv;
-#line 110
+
 	unsigned long	counter;
-#line 110
+
 	unsigned long	cycle;
-#line 110
-} (iteration);
-#line 110
+
+} iteration;
+
 
    
-#line 111
+
 struct {
-#line 111
+
 	pthread_mutex_t	mutex;
-#line 111
+
 	pthread_cond_t	cv;
-#line 111
+
 	unsigned long	counter;
-#line 111
+
 	unsigned long	cycle;
-#line 111
-} (gsudn);
-#line 111
+
+} gsudn;
+
 
    
-#line 112
+
 struct {
-#line 112
+
 	pthread_mutex_t	mutex;
-#line 112
+
 	pthread_cond_t	cv;
-#line 112
+
 	unsigned long	counter;
-#line 112
+
 	unsigned long	cycle;
-#line 112
-} (p_setup);
-#line 112
+
+} p_setup;
+
 
    
-#line 113
+
 struct {
-#line 113
+
 	pthread_mutex_t	mutex;
-#line 113
+
 	pthread_cond_t	cv;
-#line 113
+
 	unsigned long	counter;
-#line 113
+
 	unsigned long	cycle;
-#line 113
-} (p_redph);
-#line 113
+
+} p_redph;
+
 
    
-#line 114
+
 struct {
-#line 114
+
 	pthread_mutex_t	mutex;
-#line 114
+
 	pthread_cond_t	cv;
-#line 114
+
 	unsigned long	counter;
-#line 114
+
 	unsigned long	cycle;
-#line 114
-} (p_soln);
-#line 114
+
+} p_soln;
+
 
    
-#line 115
+
 struct {
-#line 115
+
 	pthread_mutex_t	mutex;
-#line 115
+
 	pthread_cond_t	cv;
-#line 115
+
 	unsigned long	counter;
-#line 115
+
 	unsigned long	cycle;
-#line 115
-} (p_subph);
-#line 115
+
+} p_subph;
+
 
    
-#line 116
+
 struct {
-#line 116
+
 	pthread_mutex_t	mutex;
-#line 116
+
 	pthread_cond_t	cv;
-#line 116
+
 	unsigned long	counter;
-#line 116
+
 	unsigned long	cycle;
-#line 116
-} (sl_prini);
-#line 116
+
+} sl_prini;
+
 
    
-#line 117
+
 struct {
-#line 117
+
 	pthread_mutex_t	mutex;
-#line 117
+
 	pthread_cond_t	cv;
-#line 117
+
 	unsigned long	counter;
-#line 117
+
 	unsigned long	cycle;
-#line 117
-} (sl_psini);
-#line 117
+
+} sl_psini;
+
 
    
-#line 118
+
 struct {
-#line 118
+
 	pthread_mutex_t	mutex;
-#line 118
+
 	pthread_cond_t	cv;
-#line 118
+
 	unsigned long	counter;
-#line 118
+
 	unsigned long	cycle;
-#line 118
-} (sl_onetime);
-#line 118
+
+} sl_onetime;
+
 
    
-#line 119
+
 struct {
-#line 119
+
 	pthread_mutex_t	mutex;
-#line 119
+
 	pthread_cond_t	cv;
-#line 119
+
 	unsigned long	counter;
-#line 119
+
 	unsigned long	cycle;
-#line 119
-} (sl_phase_1);
-#line 119
+
+} sl_phase_1;
+
 
    
-#line 120
+
 struct {
-#line 120
+
 	pthread_mutex_t	mutex;
-#line 120
+
 	pthread_cond_t	cv;
-#line 120
+
 	unsigned long	counter;
-#line 120
+
 	unsigned long	cycle;
-#line 120
-} (sl_phase_2);
-#line 120
+
+} sl_phase_2;
+
 
    
-#line 121
+
 struct {
-#line 121
+
 	pthread_mutex_t	mutex;
-#line 121
+
 	pthread_cond_t	cv;
-#line 121
+
 	unsigned long	counter;
-#line 121
+
 	unsigned long	cycle;
-#line 121
-} (sl_phase_3);
-#line 121
+
+} sl_phase_3;
+
 
    
-#line 122
+
 struct {
-#line 122
+
 	pthread_mutex_t	mutex;
-#line 122
+
 	pthread_cond_t	cv;
-#line 122
+
 	unsigned long	counter;
-#line 122
+
 	unsigned long	cycle;
-#line 122
-} (sl_phase_4);
-#line 122
+
+} sl_phase_4;
+
 
    
-#line 123
+
 struct {
-#line 123
+
 	pthread_mutex_t	mutex;
-#line 123
+
 	pthread_cond_t	cv;
-#line 123
+
 	unsigned long	counter;
-#line 123
+
 	unsigned long	cycle;
-#line 123
-} (sl_phase_5);
-#line 123
+
+} sl_phase_5;
+
 
    
-#line 124
+
 struct {
-#line 124
+
 	pthread_mutex_t	mutex;
-#line 124
+
 	pthread_cond_t	cv;
-#line 124
+
 	unsigned long	counter;
-#line 124
+
 	unsigned long	cycle;
-#line 124
-} (sl_phase_6);
-#line 124
+
+} sl_phase_6;
+
 
    
-#line 125
+
 struct {
-#line 125
+
 	pthread_mutex_t	mutex;
-#line 125
+
 	pthread_cond_t	cv;
-#line 125
+
 	unsigned long	counter;
-#line 125
+
 	unsigned long	cycle;
-#line 125
-} (sl_phase_7);
-#line 125
+
+} sl_phase_7;
+
 
    
-#line 126
+
 struct {
-#line 126
+
 	pthread_mutex_t	mutex;
-#line 126
+
 	pthread_cond_t	cv;
-#line 126
+
 	unsigned long	counter;
-#line 126
+
 	unsigned long	cycle;
-#line 126
-} (sl_phase_8);
-#line 126
+
+} sl_phase_8;
+
 
    
-#line 127
+
 struct {
-#line 127
+
 	pthread_mutex_t	mutex;
-#line 127
+
 	pthread_cond_t	cv;
-#line 127
+
 	unsigned long	counter;
-#line 127
+
 	unsigned long	cycle;
-#line 127
-} (sl_phase_9);
-#line 127
+
+} sl_phase_9;
+
 
    
-#line 128
+
 struct {
-#line 128
+
 	pthread_mutex_t	mutex;
-#line 128
+
 	pthread_cond_t	cv;
-#line 128
+
 	unsigned long	counter;
-#line 128
+
 	unsigned long	cycle;
-#line 128
-} (sl_phase_10);
-#line 128
+
+} sl_phase_10;
+
 
    
-#line 129
+
 struct {
-#line 129
+
 	pthread_mutex_t	mutex;
-#line 129
+
 	pthread_cond_t	cv;
-#line 129
+
 	unsigned long	counter;
-#line 129
+
 	unsigned long	cycle;
-#line 129
-} (error_barrier);
-#line 129
+
+} error_barrier;
+
 
 #else
    
-#line 131
+
 struct {
-#line 131
+
 	pthread_mutex_t	mutex;
-#line 131
+
 	pthread_cond_t	cv;
-#line 131
+
 	unsigned long	counter;
-#line 131
+
 	unsigned long	cycle;
-#line 131
-} (barrier);
-#line 131
+
+} barrier;
+
 
 #endif
 };
@@ -479,7 +474,7 @@ extern double outday1;
 extern double outday2;
 extern double outday3;
 
-extern long nprocs;
+extern unsigned long nprocs;
 
 extern double h1;
 extern double h3;
@@ -549,7 +544,7 @@ void laplacalc(double x[IMAX][JMAX], double z[IMAX][JMAX], long firstrow, long l
  * main.C
  */
 long log_2(long number);
-void printerr(char *s);
+void printerr(const char *s);
 
 /*
  * multi.C

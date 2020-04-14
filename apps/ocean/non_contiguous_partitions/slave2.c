@@ -41,7 +41,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    long ien;
    long jst;
    long jen;
-   double fac;
+   //double fac;
    double ressqr;
    double timst;
    double f4;
@@ -61,13 +61,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    if (procid == MASTER) {
      wrk1->ga[0][0]=0.0;
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      wrk1->ga[im-1][0]=0.0;
    }
    if (procid == xprocs-1) {
      wrk1->ga[0][jm-1]=0.0;
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      wrk1->ga[im-1][jm-1]=0.0;
    }
    if (firstrow == 1) {
@@ -99,13 +99,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    if (procid == MASTER) {
      wrk1->gb[0][0]=0.0;
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      wrk1->gb[im-1][0]=0.0;
    }
    if (procid == xprocs-1) {
      wrk1->gb[0][jm-1]=0.0;
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      wrk1->gb[im-1][jm-1]=0.0;
    }
    if (firstrow == 1) {
@@ -142,13 +142,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      if (procid == MASTER) {
        wrk3->work1[psiindex][0][0] = 0;
      }
-     if (procid == nprocs-xprocs) {
+     if ((unsigned long) procid == nprocs-xprocs) {
        wrk3->work1[psiindex][im-1][0] = 0;
      }
      if (procid == xprocs-1) {
        wrk3->work1[psiindex][0][jm-1] = 0;
      }
-     if (procid == nprocs-1) {
+     if ((unsigned long) procid == nprocs-1) {
        wrk3->work1[psiindex][im-1][jm-1] = 0;
      }
      laplacalc(fields->psi[psiindex],
@@ -161,13 +161,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    if (procid == MASTER) {
      wrk3->work2[0][0] = fields->psi[0][0][0]-fields->psi[1][0][0];
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      wrk3->work2[im-1][0] = fields->psi[0][im-1][0]-fields->psi[1][im-1][0];
    }
    if (procid == xprocs-1) {
      wrk3->work2[0][jm-1] = fields->psi[0][0][jm-1]-fields->psi[1][0][jm-1];
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      wrk3->work2[im-1][jm-1] = fields->psi[0][im-1][jm-1]-fields->psi[1][im-1][jm-1];
    }
    if (firstrow == 1) {
@@ -203,13 +203,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    if (procid == MASTER) {
      wrk2->work3[0][0] = hh3*fields->psi[0][0][0]+hh1*fields->psi[1][0][0];
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      wrk2->work3[im-1][0] = hh3*fields->psi[0][im-1][0]+hh1*fields->psi[1][im-1][0];
    }
    if (procid == xprocs-1) {
      wrk2->work3[0][jm-1] = hh3*fields->psi[0][0][jm-1]+hh1*fields->psi[1][0][jm-1];
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      wrk2->work3[im-1][jm-1] = hh3*fields->psi[0][im-1][jm-1]+hh1*fields->psi[1][im-1][jm-1];
    }
    if (firstrow == 1) {
@@ -244,13 +244,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      if (procid == MASTER) {
        wrk5->temparray[psiindex][0][0] = fields->psi[psiindex][0][0];
      }
-     if (procid == nprocs-xprocs) {
+     if ((unsigned long) procid == nprocs-xprocs) {
        wrk5->temparray[psiindex][im-1][0] = fields->psi[psiindex][im-1][0];
      }
      if (procid == xprocs-1) {
        wrk5->temparray[psiindex][0][jm-1] = fields->psi[psiindex][0][jm-1];
      }
-     if (procid == nprocs-1) {
+     if ((unsigned long) procid == nprocs-1) {
        wrk5->temparray[psiindex][im-1][jm-1] = fields->psi[psiindex][im-1][jm-1];
      }
      if (firstrow == 1) {
@@ -282,111 +282,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 284
+
 	unsigned long	Error, Cycle;
-#line 284
-	long		Cancel, Temp;
-#line 284
 
-#line 284
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_1).mutex);
-#line 284
-	if (Error != 0) {
-#line 284
-		printf("Error while trying to get lock in barrier.\n");
-#line 284
-		exit(-1);
-#line 284
-	}
-#line 284
 
-#line 284
-	Cycle = (bars->sl_phase_1).cycle;
-#line 284
-	if (++(bars->sl_phase_1).counter != (nprocs)) {
-#line 284
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 284
-		while (Cycle == (bars->sl_phase_1).cycle) {
-#line 284
-			Error = pthread_cond_wait(&(bars->sl_phase_1).cv, &(bars->sl_phase_1).mutex);
-#line 284
-			if (Error != 0) {
-#line 284
-				break;
-#line 284
-			}
-#line 284
-		}
-#line 284
-		pthread_setcancelstate(Cancel, &Temp);
-#line 284
-	} else {
-#line 284
-		(bars->sl_phase_1).cycle = !(bars->sl_phase_1).cycle;
-#line 284
-		(bars->sl_phase_1).counter = 0;
-#line 284
-		Error = pthread_cond_broadcast(&(bars->sl_phase_1).cv);
-#line 284
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 284
+
+
+
+	Cycle = (bars->sl_phase_1).cycle;
+
+	if (++(bars->sl_phase_1).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_1).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_1).cv, &(bars->sl_phase_1).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_1).cycle = !(bars->sl_phase_1).cycle;
+
+		(bars->sl_phase_1).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_1).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_1).mutex);
-#line 284
+
 }
 #else
    {
-#line 286
+
 	unsigned long	Error, Cycle;
-#line 286
-	long		Cancel, Temp;
-#line 286
 
-#line 286
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 286
-	if (Error != 0) {
-#line 286
-		printf("Error while trying to get lock in barrier.\n");
-#line 286
-		exit(-1);
-#line 286
-	}
-#line 286
 
-#line 286
-	Cycle = (bars->barrier).cycle;
-#line 286
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 286
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 286
-		while (Cycle == (bars->barrier).cycle) {
-#line 286
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 286
-			if (Error != 0) {
-#line 286
-				break;
-#line 286
-			}
-#line 286
-		}
-#line 286
-		pthread_setcancelstate(Cancel, &Temp);
-#line 286
-	} else {
-#line 286
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 286
-		(bars->barrier).counter = 0;
-#line 286
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 286
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 286
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 286
+
 }
 #endif
 /*     *******************************************************
@@ -404,10 +404,10 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      if (procid == xprocs-1) {
        fields->psi[psiindex][0][jm-1] = fields->psim[psiindex][0][jm-1];
      }
-     if (procid == nprocs-xprocs) {
+     if ((unsigned long) procid == nprocs-xprocs) {
        fields->psi[psiindex][im-1][0] = fields->psim[psiindex][im-1][0];
      }
-     if (procid == nprocs-1) {
+     if ((unsigned long) procid == nprocs-1) {
        fields->psi[psiindex][im-1][jm-1] = fields->psim[psiindex][im-1][jm-1];
      }
      if (firstrow == 1) {
@@ -446,13 +446,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      if (procid == MASTER) {
        wrk5->work7[psiindex][0][0] = 0;
      }
-     if (procid == nprocs-xprocs) {
+     if ((unsigned long) procid == nprocs-xprocs) {
        wrk5->work7[psiindex][im-1][0] = 0;
      }
      if (procid == xprocs-1) {
        wrk5->work7[psiindex][0][jm-1] = 0;
      }
-     if (procid == nprocs-1) {
+     if ((unsigned long) procid == nprocs-1) {
        wrk5->work7[psiindex][im-1][jm-1] = 0;
      }
      laplacalc(fields->psim[psiindex],wrk5->work7[psiindex],firstrow,lastrow,firstcol,lastcol,numrows,numcols);
@@ -467,13 +467,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      if (procid == MASTER) {
        wrk3->work1[psiindex][0][0] = wrk3->work1[psiindex][0][0] + wrk2->f[0];
      }
-     if (procid == nprocs-xprocs) {
+     if ((unsigned long) procid == nprocs-xprocs) {
        wrk3->work1[psiindex][im-1][0] = wrk3->work1[psiindex][im-1][0] + wrk2->f[0];
      }
      if (procid == xprocs-1) {
        wrk3->work1[psiindex][0][jm-1] = wrk3->work1[psiindex][0][jm-1] + wrk2->f[jm-1];
      }
-     if (procid == nprocs-1) {
+     if ((unsigned long) procid == nprocs-1) {
        wrk3->work1[psiindex][im-1][jm-1] = wrk3->work1[psiindex][im-1][jm-1] + wrk2->f[jm-1];
      }
      if (firstrow == 1) {
@@ -505,111 +505,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 403
+
 	unsigned long	Error, Cycle;
-#line 403
-	long		Cancel, Temp;
-#line 403
 
-#line 403
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_2).mutex);
-#line 403
-	if (Error != 0) {
-#line 403
-		printf("Error while trying to get lock in barrier.\n");
-#line 403
-		exit(-1);
-#line 403
-	}
-#line 403
 
-#line 403
-	Cycle = (bars->sl_phase_2).cycle;
-#line 403
-	if (++(bars->sl_phase_2).counter != (nprocs)) {
-#line 403
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 403
-		while (Cycle == (bars->sl_phase_2).cycle) {
-#line 403
-			Error = pthread_cond_wait(&(bars->sl_phase_2).cv, &(bars->sl_phase_2).mutex);
-#line 403
-			if (Error != 0) {
-#line 403
-				break;
-#line 403
-			}
-#line 403
-		}
-#line 403
-		pthread_setcancelstate(Cancel, &Temp);
-#line 403
-	} else {
-#line 403
-		(bars->sl_phase_2).cycle = !(bars->sl_phase_2).cycle;
-#line 403
-		(bars->sl_phase_2).counter = 0;
-#line 403
-		Error = pthread_cond_broadcast(&(bars->sl_phase_2).cv);
-#line 403
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 403
+
+
+
+	Cycle = (bars->sl_phase_2).cycle;
+
+	if (++(bars->sl_phase_2).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_2).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_2).cv, &(bars->sl_phase_2).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_2).cycle = !(bars->sl_phase_2).cycle;
+
+		(bars->sl_phase_2).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_2).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_2).mutex);
-#line 403
+
 }
 #else
    {
-#line 405
+
 	unsigned long	Error, Cycle;
-#line 405
-	long		Cancel, Temp;
-#line 405
 
-#line 405
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 405
-	if (Error != 0) {
-#line 405
-		printf("Error while trying to get lock in barrier.\n");
-#line 405
-		exit(-1);
-#line 405
-	}
-#line 405
 
-#line 405
-	Cycle = (bars->barrier).cycle;
-#line 405
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 405
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 405
-		while (Cycle == (bars->barrier).cycle) {
-#line 405
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 405
-			if (Error != 0) {
-#line 405
-				break;
-#line 405
-			}
-#line 405
-		}
-#line 405
-		pthread_setcancelstate(Cancel, &Temp);
-#line 405
-	} else {
-#line 405
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 405
-		(bars->barrier).counter = 0;
-#line 405
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 405
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 405
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 405
+
 }
 #endif
 /* 	*******************************************************
@@ -633,13 +633,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      if (procid == MASTER) {
        fields->psim[psiindex][0][0] = wrk5->temparray[psiindex][0][0];
      }
-     if (procid == nprocs-xprocs) {
+     if ((unsigned long) procid == nprocs-xprocs) {
        fields->psim[psiindex][im-1][0] = wrk5->temparray[psiindex][im-1][0];
      }
      if (procid == xprocs-1) {
        fields->psim[psiindex][0][jm-1] = wrk5->temparray[psiindex][0][jm-1];
      }
-     if (procid == nprocs-1) {
+     if ((unsigned long) procid == nprocs-1) {
        fields->psim[psiindex][im-1][jm-1] = wrk5->temparray[psiindex][im-1][jm-1];
      }
      if (firstrow == 1) {
@@ -679,111 +679,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 473
+
 	unsigned long	Error, Cycle;
-#line 473
-	long		Cancel, Temp;
-#line 473
 
-#line 473
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_3).mutex);
-#line 473
-	if (Error != 0) {
-#line 473
-		printf("Error while trying to get lock in barrier.\n");
-#line 473
-		exit(-1);
-#line 473
-	}
-#line 473
 
-#line 473
-	Cycle = (bars->sl_phase_3).cycle;
-#line 473
-	if (++(bars->sl_phase_3).counter != (nprocs)) {
-#line 473
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 473
-		while (Cycle == (bars->sl_phase_3).cycle) {
-#line 473
-			Error = pthread_cond_wait(&(bars->sl_phase_3).cv, &(bars->sl_phase_3).mutex);
-#line 473
-			if (Error != 0) {
-#line 473
-				break;
-#line 473
-			}
-#line 473
-		}
-#line 473
-		pthread_setcancelstate(Cancel, &Temp);
-#line 473
-	} else {
-#line 473
-		(bars->sl_phase_3).cycle = !(bars->sl_phase_3).cycle;
-#line 473
-		(bars->sl_phase_3).counter = 0;
-#line 473
-		Error = pthread_cond_broadcast(&(bars->sl_phase_3).cv);
-#line 473
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 473
+
+
+
+	Cycle = (bars->sl_phase_3).cycle;
+
+	if (++(bars->sl_phase_3).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_3).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_3).cv, &(bars->sl_phase_3).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_3).cycle = !(bars->sl_phase_3).cycle;
+
+		(bars->sl_phase_3).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_3).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_3).mutex);
-#line 473
+
 }
 #else
    {
-#line 475
+
 	unsigned long	Error, Cycle;
-#line 475
-	long		Cancel, Temp;
-#line 475
 
-#line 475
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 475
-	if (Error != 0) {
-#line 475
-		printf("Error while trying to get lock in barrier.\n");
-#line 475
-		exit(-1);
-#line 475
-	}
-#line 475
 
-#line 475
-	Cycle = (bars->barrier).cycle;
-#line 475
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 475
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 475
-		while (Cycle == (bars->barrier).cycle) {
-#line 475
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 475
-			if (Error != 0) {
-#line 475
-				break;
-#line 475
-			}
-#line 475
-		}
-#line 475
-		pthread_setcancelstate(Cancel, &Temp);
-#line 475
-	} else {
-#line 475
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 475
-		(bars->barrier).counter = 0;
-#line 475
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 475
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 475
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 475
+
 }
 #endif
 /*     *******************************************************
@@ -808,111 +808,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 498
+
 	unsigned long	Error, Cycle;
-#line 498
-	long		Cancel, Temp;
-#line 498
 
-#line 498
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_4).mutex);
-#line 498
-	if (Error != 0) {
-#line 498
-		printf("Error while trying to get lock in barrier.\n");
-#line 498
-		exit(-1);
-#line 498
-	}
-#line 498
 
-#line 498
-	Cycle = (bars->sl_phase_4).cycle;
-#line 498
-	if (++(bars->sl_phase_4).counter != (nprocs)) {
-#line 498
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 498
-		while (Cycle == (bars->sl_phase_4).cycle) {
-#line 498
-			Error = pthread_cond_wait(&(bars->sl_phase_4).cv, &(bars->sl_phase_4).mutex);
-#line 498
-			if (Error != 0) {
-#line 498
-				break;
-#line 498
-			}
-#line 498
-		}
-#line 498
-		pthread_setcancelstate(Cancel, &Temp);
-#line 498
-	} else {
-#line 498
-		(bars->sl_phase_4).cycle = !(bars->sl_phase_4).cycle;
-#line 498
-		(bars->sl_phase_4).counter = 0;
-#line 498
-		Error = pthread_cond_broadcast(&(bars->sl_phase_4).cv);
-#line 498
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 498
+
+
+
+	Cycle = (bars->sl_phase_4).cycle;
+
+	if (++(bars->sl_phase_4).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_4).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_4).cv, &(bars->sl_phase_4).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_4).cycle = !(bars->sl_phase_4).cycle;
+
+		(bars->sl_phase_4).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_4).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_4).mutex);
-#line 498
+
 }
 #else
    {
-#line 500
+
 	unsigned long	Error, Cycle;
-#line 500
-	long		Cancel, Temp;
-#line 500
 
-#line 500
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 500
-	if (Error != 0) {
-#line 500
-		printf("Error while trying to get lock in barrier.\n");
-#line 500
-		exit(-1);
-#line 500
-	}
-#line 500
 
-#line 500
-	Cycle = (bars->barrier).cycle;
-#line 500
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 500
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 500
-		while (Cycle == (bars->barrier).cycle) {
-#line 500
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 500
-			if (Error != 0) {
-#line 500
-				break;
-#line 500
-			}
-#line 500
-		}
-#line 500
-		pthread_setcancelstate(Cancel, &Temp);
-#line 500
-	} else {
-#line 500
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 500
-		(bars->barrier).counter = 0;
-#line 500
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 500
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 500
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 500
+
 }
 #endif
 /*     *******************************************************
@@ -934,7 +934,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      wrk1->gb[0][0] = hh1*wrk4->work5[0][0][0]+hh3*wrk4->work5[1][0][0]+hinv*frcng->tauz[0][0]+
                 lf*hh1*wrk5->work7[0][0][0]+lf*hh3*wrk5->work7[1][0][0];
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      wrk1->ga[im-1][0] = wrk4->work5[0][im-1][0]-wrk4->work5[1][im-1][0]+eig2*wrk6->work6[im-1][0]+h1inv*
                    frcng->tauz[im-1][0]+lf*wrk5->work7[0][im-1][0]-lf*wrk5->work7[1][im-1][0];
      wrk1->gb[im-1][0] = hh1*wrk4->work5[0][im-1][0]+hh3*wrk4->work5[1][im-1][0]+hinv*frcng->tauz[im-1][0]+
@@ -946,7 +946,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      wrk1->gb[0][jm-1] = hh1*wrk4->work5[0][0][jm-1]+hh3*wrk4->work5[1][0][jm-1]+hinv*frcng->tauz[0][jm-1]+
                    lf*hh1*wrk5->work7[0][0][jm-1]+lf*hh3*wrk5->work7[1][0][jm-1];
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      wrk1->ga[im-1][jm-1] = wrk4->work5[0][im-1][jm-1]-wrk4->work5[1][im-1][jm-1]+eig2*wrk6->work6[im-1][jm-1]+
                       h1inv*frcng->tauz[im-1][jm-1]+lf*wrk5->work7[0][im-1][jm-1]-lf*wrk5->work7[1][im-1][jm-1];
      wrk1->gb[im-1][jm-1] = hh1*wrk4->work5[0][im-1][jm-1]+hh3*wrk4->work5[1][im-1][jm-1]+hinv*
@@ -1000,111 +1000,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 586
+
 	unsigned long	Error, Cycle;
-#line 586
-	long		Cancel, Temp;
-#line 586
 
-#line 586
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_5).mutex);
-#line 586
-	if (Error != 0) {
-#line 586
-		printf("Error while trying to get lock in barrier.\n");
-#line 586
-		exit(-1);
-#line 586
-	}
-#line 586
 
-#line 586
-	Cycle = (bars->sl_phase_5).cycle;
-#line 586
-	if (++(bars->sl_phase_5).counter != (nprocs)) {
-#line 586
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 586
-		while (Cycle == (bars->sl_phase_5).cycle) {
-#line 586
-			Error = pthread_cond_wait(&(bars->sl_phase_5).cv, &(bars->sl_phase_5).mutex);
-#line 586
-			if (Error != 0) {
-#line 586
-				break;
-#line 586
-			}
-#line 586
-		}
-#line 586
-		pthread_setcancelstate(Cancel, &Temp);
-#line 586
-	} else {
-#line 586
-		(bars->sl_phase_5).cycle = !(bars->sl_phase_5).cycle;
-#line 586
-		(bars->sl_phase_5).counter = 0;
-#line 586
-		Error = pthread_cond_broadcast(&(bars->sl_phase_5).cv);
-#line 586
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 586
+
+
+
+	Cycle = (bars->sl_phase_5).cycle;
+
+	if (++(bars->sl_phase_5).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_5).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_5).cv, &(bars->sl_phase_5).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_5).cycle = !(bars->sl_phase_5).cycle;
+
+		(bars->sl_phase_5).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_5).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_5).mutex);
-#line 586
+
 }
 #else
    {
-#line 588
+
 	unsigned long	Error, Cycle;
-#line 588
-	long		Cancel, Temp;
-#line 588
 
-#line 588
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 588
-	if (Error != 0) {
-#line 588
-		printf("Error while trying to get lock in barrier.\n");
-#line 588
-		exit(-1);
-#line 588
-	}
-#line 588
 
-#line 588
-	Cycle = (bars->barrier).cycle;
-#line 588
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 588
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 588
-		while (Cycle == (bars->barrier).cycle) {
-#line 588
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 588
-			if (Error != 0) {
-#line 588
-				break;
-#line 588
-			}
-#line 588
-		}
-#line 588
-		pthread_setcancelstate(Cancel, &Temp);
-#line 588
-	} else {
-#line 588
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 588
-		(bars->barrier).counter = 0;
-#line 588
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 588
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 588
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 588
+
 }
 #endif
 /*     *******************************************************
@@ -1159,7 +1159,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      }
    }
 
-   fac = 1.0 / (4.0 - ressqr*eig2);
+   //fac = 1.0 / (4.0 - ressqr*eig2);
    for(i=ist;i<=ien;i++) {
      for(j=jst;j<=jen;j++) {
        multi->q_multi[numlev-1][i][j] = guess->oldga[i][j];
@@ -1168,15 +1168,15 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
 
    if ((procid == MASTER) || (do_stats)) {
      {
-#line 650
-	struct timeval	FullTime;
-#line 650
 
-#line 650
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 650
+
 	(multi_start) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 650
+
 };
    }
 
@@ -1184,15 +1184,15 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
 
    if ((procid == MASTER) || (do_stats)) {
      {
-#line 656
-	struct timeval	FullTime;
-#line 656
 
-#line 656
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 656
+
 	(multi_end) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 656
+
 };
      gp[procid].multi_time += (multi_end - multi_start);
    }
@@ -1211,111 +1211,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 673
+
 	unsigned long	Error, Cycle;
-#line 673
-	long		Cancel, Temp;
-#line 673
 
-#line 673
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_6).mutex);
-#line 673
-	if (Error != 0) {
-#line 673
-		printf("Error while trying to get lock in barrier.\n");
-#line 673
-		exit(-1);
-#line 673
-	}
-#line 673
 
-#line 673
-	Cycle = (bars->sl_phase_6).cycle;
-#line 673
-	if (++(bars->sl_phase_6).counter != (nprocs)) {
-#line 673
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 673
-		while (Cycle == (bars->sl_phase_6).cycle) {
-#line 673
-			Error = pthread_cond_wait(&(bars->sl_phase_6).cv, &(bars->sl_phase_6).mutex);
-#line 673
-			if (Error != 0) {
-#line 673
-				break;
-#line 673
-			}
-#line 673
-		}
-#line 673
-		pthread_setcancelstate(Cancel, &Temp);
-#line 673
-	} else {
-#line 673
-		(bars->sl_phase_6).cycle = !(bars->sl_phase_6).cycle;
-#line 673
-		(bars->sl_phase_6).counter = 0;
-#line 673
-		Error = pthread_cond_broadcast(&(bars->sl_phase_6).cv);
-#line 673
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 673
+
+
+
+	Cycle = (bars->sl_phase_6).cycle;
+
+	if (++(bars->sl_phase_6).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_6).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_6).cv, &(bars->sl_phase_6).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_6).cycle = !(bars->sl_phase_6).cycle;
+
+		(bars->sl_phase_6).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_6).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_6).mutex);
-#line 673
+
 }
 #else
    {
-#line 675
+
 	unsigned long	Error, Cycle;
-#line 675
-	long		Cancel, Temp;
-#line 675
 
-#line 675
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 675
-	if (Error != 0) {
-#line 675
-		printf("Error while trying to get lock in barrier.\n");
-#line 675
-		exit(-1);
-#line 675
-	}
-#line 675
 
-#line 675
-	Cycle = (bars->barrier).cycle;
-#line 675
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 675
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 675
-		while (Cycle == (bars->barrier).cycle) {
-#line 675
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 675
-			if (Error != 0) {
-#line 675
-				break;
-#line 675
-			}
-#line 675
-		}
-#line 675
-		pthread_setcancelstate(Cancel, &Temp);
-#line 675
-	} else {
-#line 675
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 675
-		(bars->barrier).counter = 0;
-#line 675
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 675
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 675
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 675
+
 }
 #endif
 /*     *******************************************************
@@ -1336,10 +1336,10 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    if (procid == xprocs - 1) {
      psiaipriv = psiaipriv + 0.25*(wrk1->ga[0][jm-1]);
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      psiaipriv=psiaipriv+0.25*(wrk1->ga[im-1][0]);
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      psiaipriv=psiaipriv+0.25*(wrk1->ga[im-1][jm-1]);
    }
    if (firstrow == 1) {
@@ -1376,111 +1376,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    {pthread_mutex_unlock(&(locks->psibilock));}
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 734
+
 	unsigned long	Error, Cycle;
-#line 734
-	long		Cancel, Temp;
-#line 734
 
-#line 734
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_7).mutex);
-#line 734
-	if (Error != 0) {
-#line 734
-		printf("Error while trying to get lock in barrier.\n");
-#line 734
-		exit(-1);
-#line 734
-	}
-#line 734
 
-#line 734
-	Cycle = (bars->sl_phase_7).cycle;
-#line 734
-	if (++(bars->sl_phase_7).counter != (nprocs)) {
-#line 734
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 734
-		while (Cycle == (bars->sl_phase_7).cycle) {
-#line 734
-			Error = pthread_cond_wait(&(bars->sl_phase_7).cv, &(bars->sl_phase_7).mutex);
-#line 734
-			if (Error != 0) {
-#line 734
-				break;
-#line 734
-			}
-#line 734
-		}
-#line 734
-		pthread_setcancelstate(Cancel, &Temp);
-#line 734
-	} else {
-#line 734
-		(bars->sl_phase_7).cycle = !(bars->sl_phase_7).cycle;
-#line 734
-		(bars->sl_phase_7).counter = 0;
-#line 734
-		Error = pthread_cond_broadcast(&(bars->sl_phase_7).cv);
-#line 734
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 734
+
+
+
+	Cycle = (bars->sl_phase_7).cycle;
+
+	if (++(bars->sl_phase_7).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_7).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_7).cv, &(bars->sl_phase_7).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_7).cycle = !(bars->sl_phase_7).cycle;
+
+		(bars->sl_phase_7).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_7).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_7).mutex);
-#line 734
+
 }
 #else
    {
-#line 736
+
 	unsigned long	Error, Cycle;
-#line 736
-	long		Cancel, Temp;
-#line 736
 
-#line 736
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 736
-	if (Error != 0) {
-#line 736
-		printf("Error while trying to get lock in barrier.\n");
-#line 736
-		exit(-1);
-#line 736
-	}
-#line 736
 
-#line 736
-	Cycle = (bars->barrier).cycle;
-#line 736
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 736
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 736
-		while (Cycle == (bars->barrier).cycle) {
-#line 736
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 736
-			if (Error != 0) {
-#line 736
-				break;
-#line 736
-			}
-#line 736
-		}
-#line 736
-		pthread_setcancelstate(Cancel, &Temp);
-#line 736
-	} else {
-#line 736
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 736
-		(bars->barrier).counter = 0;
-#line 736
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 736
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 736
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 736
+
 }
 #endif
 /*      *******************************************************
@@ -1498,13 +1498,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    if (procid == MASTER) {
      wrk1->ga[0][0] = wrk1->ga[0][0]+f4*wrk1->psib[0][0];
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      wrk1->ga[im-1][0] = wrk1->ga[im-1][0]+f4*wrk1->psib[im-1][0];
    }
    if (procid == xprocs-1) {
      wrk1->ga[0][jm-1] = wrk1->ga[0][jm-1]+f4*wrk1->psib[0][jm-1];
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      wrk1->ga[im-1][jm-1] = wrk1->ga[im-1][jm-1]+f4*wrk1->psib[im-1][jm-1];
    }
    if (firstrow == 1) {
@@ -1534,111 +1534,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 788
+
 	unsigned long	Error, Cycle;
-#line 788
-	long		Cancel, Temp;
-#line 788
 
-#line 788
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_8).mutex);
-#line 788
-	if (Error != 0) {
-#line 788
-		printf("Error while trying to get lock in barrier.\n");
-#line 788
-		exit(-1);
-#line 788
-	}
-#line 788
 
-#line 788
-	Cycle = (bars->sl_phase_8).cycle;
-#line 788
-	if (++(bars->sl_phase_8).counter != (nprocs)) {
-#line 788
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 788
-		while (Cycle == (bars->sl_phase_8).cycle) {
-#line 788
-			Error = pthread_cond_wait(&(bars->sl_phase_8).cv, &(bars->sl_phase_8).mutex);
-#line 788
-			if (Error != 0) {
-#line 788
-				break;
-#line 788
-			}
-#line 788
-		}
-#line 788
-		pthread_setcancelstate(Cancel, &Temp);
-#line 788
-	} else {
-#line 788
-		(bars->sl_phase_8).cycle = !(bars->sl_phase_8).cycle;
-#line 788
-		(bars->sl_phase_8).counter = 0;
-#line 788
-		Error = pthread_cond_broadcast(&(bars->sl_phase_8).cv);
-#line 788
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 788
+
+
+
+	Cycle = (bars->sl_phase_8).cycle;
+
+	if (++(bars->sl_phase_8).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_8).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_8).cv, &(bars->sl_phase_8).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_8).cycle = !(bars->sl_phase_8).cycle;
+
+		(bars->sl_phase_8).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_8).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_8).mutex);
-#line 788
+
 }
 #else
    {
-#line 790
+
 	unsigned long	Error, Cycle;
-#line 790
-	long		Cancel, Temp;
-#line 790
 
-#line 790
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 790
-	if (Error != 0) {
-#line 790
-		printf("Error while trying to get lock in barrier.\n");
-#line 790
-		exit(-1);
-#line 790
-	}
-#line 790
 
-#line 790
-	Cycle = (bars->barrier).cycle;
-#line 790
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 790
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 790
-		while (Cycle == (bars->barrier).cycle) {
-#line 790
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 790
-			if (Error != 0) {
-#line 790
-				break;
-#line 790
-			}
-#line 790
-		}
-#line 790
-		pthread_setcancelstate(Cancel, &Temp);
-#line 790
-	} else {
-#line 790
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 790
-		(bars->barrier).counter = 0;
-#line 790
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 790
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 790
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 790
+
 }
 #endif
    for(i=istart;i<=iend;i++) {
@@ -1667,7 +1667,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      }
    }
 
-   fac = 1.0 / (4.0 - ressqr*eig2);
+   //fac = 1.0 / (4.0 - ressqr*eig2);
    for(i=ist;i<=ien;i++) {
      for(j=jst;j<=jen;j++) {
        multi->q_multi[numlev-1][i][j] = guess->oldgb[i][j];
@@ -1676,15 +1676,15 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
 
    if ((procid == MASTER) || (do_stats)) {
      {
-#line 826
-	struct timeval	FullTime;
-#line 826
 
-#line 826
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 826
+
 	(multi_start) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 826
+
 };
    }
 
@@ -1692,15 +1692,15 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
 
    if ((procid == MASTER) || (do_stats)) {
      {
-#line 832
-	struct timeval	FullTime;
-#line 832
 
-#line 832
+	struct timeval	FullTime;
+
+
+
 	gettimeofday(&FullTime, NULL);
-#line 832
+
 	(multi_end) = (unsigned long)(FullTime.tv_usec + FullTime.tv_sec * 1000000);
-#line 832
+
 };
      gp[procid].multi_time += (multi_end - multi_start);
    }
@@ -1713,111 +1713,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 843
+
 	unsigned long	Error, Cycle;
-#line 843
-	long		Cancel, Temp;
-#line 843
 
-#line 843
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_8).mutex);
-#line 843
-	if (Error != 0) {
-#line 843
-		printf("Error while trying to get lock in barrier.\n");
-#line 843
-		exit(-1);
-#line 843
-	}
-#line 843
 
-#line 843
-	Cycle = (bars->sl_phase_8).cycle;
-#line 843
-	if (++(bars->sl_phase_8).counter != (nprocs)) {
-#line 843
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 843
-		while (Cycle == (bars->sl_phase_8).cycle) {
-#line 843
-			Error = pthread_cond_wait(&(bars->sl_phase_8).cv, &(bars->sl_phase_8).mutex);
-#line 843
-			if (Error != 0) {
-#line 843
-				break;
-#line 843
-			}
-#line 843
-		}
-#line 843
-		pthread_setcancelstate(Cancel, &Temp);
-#line 843
-	} else {
-#line 843
-		(bars->sl_phase_8).cycle = !(bars->sl_phase_8).cycle;
-#line 843
-		(bars->sl_phase_8).counter = 0;
-#line 843
-		Error = pthread_cond_broadcast(&(bars->sl_phase_8).cv);
-#line 843
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 843
+
+
+
+	Cycle = (bars->sl_phase_8).cycle;
+
+	if (++(bars->sl_phase_8).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_8).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_8).cv, &(bars->sl_phase_8).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_8).cycle = !(bars->sl_phase_8).cycle;
+
+		(bars->sl_phase_8).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_8).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_8).mutex);
-#line 843
+
 }
 #else
    {
-#line 845
+
 	unsigned long	Error, Cycle;
-#line 845
-	long		Cancel, Temp;
-#line 845
 
-#line 845
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 845
-	if (Error != 0) {
-#line 845
-		printf("Error while trying to get lock in barrier.\n");
-#line 845
-		exit(-1);
-#line 845
-	}
-#line 845
 
-#line 845
-	Cycle = (bars->barrier).cycle;
-#line 845
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 845
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 845
-		while (Cycle == (bars->barrier).cycle) {
-#line 845
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 845
-			if (Error != 0) {
-#line 845
-				break;
-#line 845
-			}
-#line 845
-		}
-#line 845
-		pthread_setcancelstate(Cancel, &Temp);
-#line 845
-	} else {
-#line 845
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 845
-		(bars->barrier).counter = 0;
-#line 845
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 845
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 845
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 845
+
 }
 #endif
 /*      *******************************************************
@@ -1839,7 +1839,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      wrk3->work2[0][0] = wrk1->gb[0][0]-hh1*wrk1->ga[0][0];
      wrk2->work3[0][0] = wrk1->gb[0][0]+hh3*wrk1->ga[0][0];
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      wrk3->work2[im-1][0] = wrk1->gb[im-1][0]-hh1*wrk1->ga[im-1][0];
      wrk2->work3[im-1][0] = wrk1->gb[im-1][0]+hh3*wrk1->ga[im-1][0];
    }
@@ -1847,7 +1847,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
      wrk3->work2[0][jm-1] = wrk1->gb[0][jm-1]-hh1*wrk1->ga[0][jm-1];
      wrk2->work3[0][jm-1] = wrk1->gb[0][jm-1]+hh3*wrk1->ga[0][jm-1];
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      wrk3->work2[im-1][jm-1] = wrk1->gb[im-1][jm-1]-hh1*wrk1->ga[im-1][jm-1];
      wrk2->work3[im-1][jm-1] = wrk1->gb[im-1][jm-1]+hh3*wrk1->ga[im-1][jm-1];
    }
@@ -1884,111 +1884,111 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    }
 #if defined(MULTIPLE_BARRIERS)
    {
-#line 910
+
 	unsigned long	Error, Cycle;
-#line 910
-	long		Cancel, Temp;
-#line 910
 
-#line 910
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->sl_phase_9).mutex);
-#line 910
-	if (Error != 0) {
-#line 910
-		printf("Error while trying to get lock in barrier.\n");
-#line 910
-		exit(-1);
-#line 910
-	}
-#line 910
 
-#line 910
-	Cycle = (bars->sl_phase_9).cycle;
-#line 910
-	if (++(bars->sl_phase_9).counter != (nprocs)) {
-#line 910
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 910
-		while (Cycle == (bars->sl_phase_9).cycle) {
-#line 910
-			Error = pthread_cond_wait(&(bars->sl_phase_9).cv, &(bars->sl_phase_9).mutex);
-#line 910
-			if (Error != 0) {
-#line 910
-				break;
-#line 910
-			}
-#line 910
-		}
-#line 910
-		pthread_setcancelstate(Cancel, &Temp);
-#line 910
-	} else {
-#line 910
-		(bars->sl_phase_9).cycle = !(bars->sl_phase_9).cycle;
-#line 910
-		(bars->sl_phase_9).counter = 0;
-#line 910
-		Error = pthread_cond_broadcast(&(bars->sl_phase_9).cv);
-#line 910
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 910
+
+
+
+	Cycle = (bars->sl_phase_9).cycle;
+
+	if (++(bars->sl_phase_9).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->sl_phase_9).cycle) {
+
+			Error = pthread_cond_wait(&(bars->sl_phase_9).cv, &(bars->sl_phase_9).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->sl_phase_9).cycle = !(bars->sl_phase_9).cycle;
+
+		(bars->sl_phase_9).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->sl_phase_9).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->sl_phase_9).mutex);
-#line 910
+
 }
 #else
    {
-#line 912
+
 	unsigned long	Error, Cycle;
-#line 912
-	long		Cancel, Temp;
-#line 912
 
-#line 912
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(bars->barrier).mutex);
-#line 912
-	if (Error != 0) {
-#line 912
-		printf("Error while trying to get lock in barrier.\n");
-#line 912
-		exit(-1);
-#line 912
-	}
-#line 912
 
-#line 912
-	Cycle = (bars->barrier).cycle;
-#line 912
-	if (++(bars->barrier).counter != (nprocs)) {
-#line 912
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 912
-		while (Cycle == (bars->barrier).cycle) {
-#line 912
-			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
-#line 912
-			if (Error != 0) {
-#line 912
-				break;
-#line 912
-			}
-#line 912
-		}
-#line 912
-		pthread_setcancelstate(Cancel, &Temp);
-#line 912
-	} else {
-#line 912
-		(bars->barrier).cycle = !(bars->barrier).cycle;
-#line 912
-		(bars->barrier).counter = 0;
-#line 912
-		Error = pthread_cond_broadcast(&(bars->barrier).cv);
-#line 912
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 912
+
+
+
+	Cycle = (bars->barrier).cycle;
+
+	if (++(bars->barrier).counter != (nprocs)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (bars->barrier).cycle) {
+
+			Error = pthread_cond_wait(&(bars->barrier).cv, &(bars->barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(bars->barrier).cycle = !(bars->barrier).cycle;
+
+		(bars->barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(bars->barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(bars->barrier).mutex);
-#line 912
+
 }
 #endif
 /*      *******************************************************
@@ -2005,13 +2005,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    if (procid == MASTER) {
      fields->psi[0][0][0] = fields->psi[0][0][0] + timst*wrk2->work3[0][0];
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      fields->psi[0][im-1][0] = fields->psi[0][im-1][0] + timst*wrk2->work3[im-1][0];
    }
    if (procid == xprocs-1) {
      fields->psi[0][0][jm-1] = fields->psi[0][0][jm-1] + timst*wrk2->work3[0][jm-1];
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      fields->psi[0][im-1][jm-1] = fields->psi[0][im-1][jm-1] + timst*wrk2->work3[im-1][jm-1];
    }
    if (firstrow == 1) {
@@ -2043,13 +2043,13 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
    if (procid == MASTER) {
      fields->psi[1][0][0] = fields->psi[1][0][0] + timst*wrk3->work2[0][0];
    }
-   if (procid == nprocs-xprocs) {
+   if ((unsigned long) procid == nprocs-xprocs) {
      fields->psi[1][im-1][0] = fields->psi[1][im-1][0] + timst*wrk3->work2[im-1][0];
    }
    if (procid == xprocs-1) {
      fields->psi[1][0][jm-1] = fields->psi[1][0][jm-1] + timst*wrk3->work2[0][jm-1];
    }
-   if (procid == nprocs-1) {
+   if ((unsigned long) procid == nprocs-1) {
      fields->psi[1][im-1][jm-1] = fields->psi[1][im-1][jm-1] + timst*wrk3->work2[im-1][jm-1];
    }
    if (firstrow == 1) {
@@ -2083,7 +2083,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -2137,7 +2137,7 @@ void slave2(long procid, long firstrow, long lastrow, long numrows, long firstco
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
