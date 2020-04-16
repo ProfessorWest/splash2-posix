@@ -105,7 +105,7 @@ long NFSV=10;
 long LKT=0;
 
 first_last_array **start_end; /* ptr to array of start/end box #s */
-long NumProcs;                 /* number of processors being used;
+unsigned long NumProcs;                 /* number of processors being used;
                                  run-time input           */
 
 double XTT;
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
     printf("%ld boxes with %ld processors\n\n",
            BOX_PER_SIDE * BOX_PER_SIDE * BOX_PER_SIDE, NumProcs);
 
-    if (NumProcs > (BOX_PER_SIDE * BOX_PER_SIDE * BOX_PER_SIDE)) {
+    if (NumProcs > (unsigned long)(BOX_PER_SIDE * BOX_PER_SIDE * BOX_PER_SIDE)) {
         fprintf(stderr,"ERROR: less boxes (%ld) than processors (%ld)\n",
                 BOX_PER_SIDE * BOX_PER_SIDE * BOX_PER_SIDE, NumProcs);
         fflush(stderr);
@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 
         start_end = (first_last_array **)
             malloc(sizeof(first_last_array *) * NumProcs);;
-        for (i=0; i < NumProcs; i++) {
+        for (unsigned long i=0; i < NumProcs; i++) {
             start_end[i] = (first_last_array *)
                 malloc(sizeof(first_last_array));;
         }
@@ -208,7 +208,7 @@ int main(int argc, char **argv)
             if (k<1) k=1;
             while ((yprocs == 0) && (k>0)) {
                 l = NumProcs/(j*k);
-                if ((j*k*l) == NumProcs) {
+                if ((unsigned long)(j*k*l) == NumProcs) {
                     xprocs = j;
                     yprocs = k;
                     zprocs = l;
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
 
         /* Set all box ptrs to null */
 
-        for (i=0; i<NumProcs; i++) my_boxes[i] = NULL;
+        for (unsigned long i=0; i<NumProcs; i++) my_boxes[i] = NULL;
 
         /* Set up links for all boxes for initial interf and intraf */
 
@@ -466,7 +466,7 @@ int main(int argc, char **argv)
 };
     {
 
-	long	i, Error;
+	unsigned long	i, Error;
 
 
 

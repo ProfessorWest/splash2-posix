@@ -208,7 +208,7 @@ void INTERF(long DEST, double *VIR, long ProcID)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -294,7 +294,7 @@ void UPDATE_FORCES(struct link *link_ptr, long DEST, double *XL, double *YL, dou
      */
 
     long K;
-    double G110[3], G23[3], G45[3], TT1[3], TT[3], TT2[3];
+    double G110[3], G23[3], TT1[3], TT[3];
     double GG[15][3];
 
     /* tx_p, ty_p, tz_p are temporary pointers used to avoid too much
@@ -320,18 +320,12 @@ void UPDATE_FORCES(struct link *link_ptr, long DEST, double *XL, double *YL, dou
     G23[XDIR] = GG[2][XDIR]+GG[3][XDIR];
     G23[YDIR] = GG[2][YDIR]+GG[3][YDIR];
     G23[ZDIR] = GG[2][ZDIR]+GG[3][ZDIR];
-    G45[XDIR]=GG[4][XDIR]+GG[5][XDIR];
-    G45[YDIR]=GG[4][YDIR]+GG[5][YDIR];
-    G45[ZDIR]=GG[4][ZDIR]+GG[5][ZDIR];
     TT1[XDIR] =GG[1][XDIR]*C2;
     TT1[YDIR] =GG[1][YDIR]*C2;
     TT1[ZDIR] =GG[1][ZDIR]*C2;
     TT[XDIR] =G23[XDIR]*C2+TT1[XDIR];
     TT[YDIR] =G23[YDIR]*C2+TT1[YDIR];
     TT[ZDIR] =G23[ZDIR]*C2+TT1[ZDIR];
-    TT2[XDIR]=G45[XDIR]*C2+TT1[XDIR];
-    TT2[YDIR]=G45[YDIR]*C2+TT1[YDIR];
-    TT2[ZDIR]=G45[ZDIR]*C2+TT1[ZDIR];
 
     /* Update force or acceleration for link */
 

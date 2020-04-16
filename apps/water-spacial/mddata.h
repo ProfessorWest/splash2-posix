@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "mddata.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -35,7 +32,7 @@ typedef struct link {
 
 typedef struct box_dummy {
       struct link *list;
-      pthread_mutex_t (boxlock);
+      pthread_mutex_t boxlock;
 } box_type;
 
 extern box_type ***BOX;
@@ -56,5 +53,5 @@ extern box_list **my_boxes;
 extern double  TLC[100], FPOT, FKIN;
 extern long IX[3*MXOD2+1], IRST,NVAR,NXYZ,NXV,IXF,IYF,IZF,IMY,IMZ;
 
-extern long NumProcs;
+extern unsigned long NumProcs;
 extern long NumBoxes;

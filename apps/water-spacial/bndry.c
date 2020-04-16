@@ -82,7 +82,7 @@ void BNDRY(long ProcID)     /* this routine puts the molecules back inside the b
                 (Z_INDEX != k)) {
 
                 if (X_INDEX < 0 || Y_INDEX < 0 || Z_INDEX < 0) {
-                    printf("ignoring: X_INDEX == %d, Y_INDEX = %d, Z_INDEX = %d?\n",
+                    printf("ignoring: X_INDEX == %ld, Y_INDEX = %ld, Z_INDEX = %ld?\n",
                             X_INDEX, Y_INDEX, Z_INDEX);
                     break;
                 }

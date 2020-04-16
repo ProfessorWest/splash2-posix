@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "global.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -22,56 +19,56 @@ structure and the maximum number of molecules allowed
 by the program. */
 
 struct GlobalMemory {
-    pthread_mutex_t (IOLock);
-    pthread_mutex_t (IndexLock);
-    pthread_mutex_t (IntrafVirLock);
-    pthread_mutex_t (InterfVirLock);
-    pthread_mutex_t (KinetiSumLock);
-    pthread_mutex_t (PotengSumLock);
+    pthread_mutex_t IOLock;
+    pthread_mutex_t IndexLock;
+    pthread_mutex_t IntrafVirLock;
+    pthread_mutex_t InterfVirLock;
+    pthread_mutex_t KinetiSumLock;
+    pthread_mutex_t PotengSumLock;
     
-#line 28
+
 struct {
-#line 28
+
 	pthread_mutex_t	mutex;
-#line 28
+
 	pthread_cond_t	cv;
-#line 28
+
 	unsigned long	counter;
-#line 28
+
 	unsigned long	cycle;
-#line 28
-} (start);
-#line 28
+
+} start;
+
 
     
-#line 29
+
 struct {
-#line 29
+
 	pthread_mutex_t	mutex;
-#line 29
+
 	pthread_cond_t	cv;
-#line 29
+
 	unsigned long	counter;
-#line 29
+
 	unsigned long	cycle;
-#line 29
-} (InterfBar);
-#line 29
+
+} InterfBar;
+
 
     
-#line 30
+
 struct {
-#line 30
+
 	pthread_mutex_t	mutex;
-#line 30
+
 	pthread_cond_t	cv;
-#line 30
+
 	unsigned long	counter;
-#line 30
+
 	unsigned long	cycle;
-#line 30
-} (PotengBar);
-#line 30
+
+} PotengBar;
+
 
     long Index;
     double VIR;

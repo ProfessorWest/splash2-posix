@@ -19,6 +19,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 extern pthread_t PThreadTable[];
 
 
@@ -130,7 +131,7 @@ void POTENG(double *POTA, double *POTR, double *PTRF, long ProcID)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
