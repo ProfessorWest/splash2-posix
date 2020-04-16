@@ -100,7 +100,7 @@ long StartMol[MAXPROCS+1];       /* number of the first molecule
                                    to be handled by this process; used
                                    for static scheduling     */
 long MolsPerProc;                /* number of mols per processor */
-long NumProcs;                   /* number of processors being used;
+unsigned long NumProcs;                   /* number of processors being used;
                                    run-time input           */
 double XTT;
 
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
         fprintf(stderr,"ERROR: Usage: water < infile, which must have 10 fields, see SPLASH documentation or comment at top of water.C\n");
 
     if (NMOL > MAXLCKS) {
-        fprintf(stderr, "Just so you know ... Lock array in global.H has size %ld < %ld (NMOL)\n code will still run correctly but there may be lock contention\n\n", MAXLCKS, NMOL);
+        fprintf(stderr, "Just so you know ... Lock array in global.h has size %ld < %ld (NMOL)\n code will still run correctly but there may be lock contention\n\n", MAXLCKS, NMOL);
     }
 
     printf("Using %ld procs on %ld steps of %ld mols\n", NumProcs, NSTEP, NMOL);
@@ -174,7 +174,8 @@ int main(int argc, char **argv)
             PFORCES[i] array in its local memory */
 
         PFORCES = (double ****) malloc(NumProcs * sizeof (double ***));;
-        { long i,j,k;
+        { long j,k;
+            unsigned long i;
 
           for (i = 0; i < NumProcs; i++) {
               PFORCES[i] = (double ***) malloc(NMOL * sizeof (double **));;
@@ -309,7 +310,7 @@ int main(int argc, char **argv)
         if (NMOL < MAXLCKS) {
             {
 
-	unsigned long	i, Error;
+	long	i, Error;
 
 
 
@@ -359,7 +360,7 @@ int main(int argc, char **argv)
 
         MolsPerProc = NMOL/NumProcs;
         StartMol[0] = 0;
-        for (pid = 1; pid < NumProcs; pid += 1) {
+        for (pid = 1; (unsigned long)pid < NumProcs; pid += 1) {
             StartMol[pid] = StartMol[pid-1] + MolsPerProc;
         }
         StartMol[NumProcs] = NMOL;
@@ -412,7 +413,7 @@ int main(int argc, char **argv)
 };
     {
 
-	long	i, Error;
+	unsigned long	i, Error;
 
 
 

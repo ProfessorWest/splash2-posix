@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "global.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -24,60 +21,60 @@ by the program. */
 #define MAXLCKS	4096L
 
 struct GlobalMemory {
-    pthread_mutex_t (IOLock);
-    pthread_mutex_t (IndexLock);
-    pthread_mutex_t (IntrafVirLock);
-    pthread_mutex_t (InterfVirLock);
-    pthread_mutex_t (FXLock);
-    pthread_mutex_t (FYLock);
-    pthread_mutex_t (FZLock);
-    pthread_mutex_t (KinetiSumLock);
-    pthread_mutex_t (PotengSumLock);
+    pthread_mutex_t IOLock;
+    pthread_mutex_t IndexLock;
+    pthread_mutex_t IntrafVirLock;
+    pthread_mutex_t InterfVirLock;
+    pthread_mutex_t FXLock;
+    pthread_mutex_t FYLock;
+    pthread_mutex_t FZLock;
+    pthread_mutex_t KinetiSumLock;
+    pthread_mutex_t PotengSumLock;
     pthread_mutex_t MolLock[MAXLCKS];
     
-#line 34
+
 struct {
-#line 34
+
 	pthread_mutex_t	mutex;
-#line 34
+
 	pthread_cond_t	cv;
-#line 34
+
 	unsigned long	counter;
-#line 34
+
 	unsigned long	cycle;
-#line 34
-} (start);
-#line 34
+
+} start;
+
 
     
-#line 35
+
 struct {
-#line 35
+
 	pthread_mutex_t	mutex;
-#line 35
+
 	pthread_cond_t	cv;
-#line 35
+
 	unsigned long	counter;
-#line 35
+
 	unsigned long	cycle;
-#line 35
-} (InterfBar);
-#line 35
+
+} InterfBar;
+
 
     
-#line 36
+
 struct {
-#line 36
+
 	pthread_mutex_t	mutex;
-#line 36
+
 	pthread_cond_t	cv;
-#line 36
+
 	unsigned long	counter;
-#line 36
+
 	unsigned long	cycle;
-#line 36
-} (PotengBar);
-#line 36
+
+} PotengBar;
+
 
     long Index;
     double VIR;

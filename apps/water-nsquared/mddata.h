@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "mddata.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -54,4 +51,4 @@ extern double  TLC[100], FPOT, FKIN;
 
 extern long StartMol[MAXPROCS+1];
 extern long MolsPerProc;
-extern long NumProcs;
+extern unsigned long NumProcs;

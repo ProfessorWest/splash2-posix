@@ -48,7 +48,7 @@ double MDMAIN(long NSTEP, long NPRINT, long NSAVE, long NORD1, long ProcID)
 
     {
 	unsigned long	Error, Cycle;
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 	Error = pthread_mutex_lock(&(gl->start).mutex);
 	if (Error != 0) {
@@ -78,7 +78,7 @@ double MDMAIN(long NSTEP, long NPRINT, long NSAVE, long NORD1, long ProcID)
 
     {
 	unsigned long	Error, Cycle;
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 	Error = pthread_mutex_lock(&(gl->start).mutex);
 	if (Error != 0) {
@@ -146,7 +146,7 @@ double MDMAIN(long NSTEP, long NPRINT, long NSAVE, long NORD1, long ProcID)
 
         {
 	unsigned long	Error, Cycle;
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 	Error = pthread_mutex_lock(&(gl->start).mutex);
 	if (Error != 0) {
@@ -175,7 +175,7 @@ double MDMAIN(long NSTEP, long NPRINT, long NSAVE, long NORD1, long ProcID)
         INTRAF(&gl->VIR,ProcID);
         {
 	unsigned long	Error, Cycle;
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 	Error = pthread_mutex_lock(&(gl->start).mutex);
 	if (Error != 0) {
@@ -257,7 +257,7 @@ double MDMAIN(long NSTEP, long NPRINT, long NSAVE, long NORD1, long ProcID)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -352,7 +352,7 @@ double MDMAIN(long NSTEP, long NPRINT, long NSAVE, long NORD1, long ProcID)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
@@ -439,7 +439,7 @@ double MDMAIN(long NSTEP, long NPRINT, long NSAVE, long NORD1, long ProcID)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 

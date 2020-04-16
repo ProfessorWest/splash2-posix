@@ -19,6 +19,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 extern pthread_t PThreadTable[];
 
 #include "math.h"
@@ -198,7 +199,7 @@ void INTERF(long DEST, double *VIR, long ProcID)
 
 	unsigned long	Error, Cycle;
 
-	long		Cancel, Temp;
+	int		Cancel, Temp;
 
 
 
