@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "stdinc.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -42,7 +39,7 @@ typedef FILE *stream;
  * BOOL, TRUE and FALSE: standard names for logical values.
  */
 
-typedef long bool;
+typedef int cbool;
 
 #ifndef TRUE
 
@@ -57,12 +54,6 @@ typedef long bool;
 
 typedef char byte;
 
-/*
- * STRING: for null-terminated strings which are not taken apart.
- */
-
-typedef char *string;
-
 /*
  * REAL: default type is double; 
  */

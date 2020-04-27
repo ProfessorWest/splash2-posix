@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "code.H"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -27,9 +24,9 @@
 #define PAD_SIZE (PAGE_SIZE / (sizeof(long)))
 
 /* Defined by the input file */
-global string headline; 	/* message describing calculation */
-global string infile; 		/* file name for snapshot input */
-global string outfile; 		/* file name for snapshot output */
+global const char *headline; 	/* message describing calculation */
+global char *infile; 		/* file name for snapshot input */
+global char *outfile; 		/* file name for snapshot output */
 global real dtime; 		/* timestep for leapfrog integrator */
 global real dtout; 		/* time between data outputs */
 global real tstop; 		/* time to stop calculation */
@@ -41,7 +38,7 @@ global real tolsq; 		/* square of previous */
 global real eps; 		/* potential softening parameter */
 global real epssq; 		/* square of previous */
 global real dthf; 		/* half time step */
-global long NPROC;		/* Number of Processors */
+global unsigned long NPROC;		/* Number of Processors */
 
 global long maxcell;		/* max number of cells allocated */
 global long maxleaf;		/* max number of leaves allocated */
@@ -70,24 +67,17 @@ struct GlobalMemory  {	/* all this info is for the whole system */
     vector max;        /* temporary upper right corner of the box */
     real rsize;        /* side-length of integer coordinate box   */
     
-#line 69
 struct {
-#line 69
 	pthread_mutex_t	mutex;
-#line 69
 	pthread_cond_t	cv;
-#line 69
 	unsigned long	counter;
-#line 69
 	unsigned long	cycle;
-#line 69
-} (Barrier);
-#line 69
+} Barrier;
    /* barrier at the beginning of stepsystem  */
-    pthread_mutex_t (CountLock); /* Lock on the shared variables            */
-    pthread_mutex_t (NcellLock); /* Lock on the counter of array of cells for loadtree */
-    pthread_mutex_t (NleafLock);/* Lock on the counter of array of leaves for loadtree */
-    pthread_mutex_t (io_lock);
+    pthread_mutex_t CountLock; /* Lock on the shared variables            */
+    pthread_mutex_t NcellLock; /* Lock on the counter of array of cells for loadtree */
+    pthread_mutex_t NleafLock;/* Lock on the counter of array of leaves for loadtree */
+    pthread_mutex_t io_lock;
     unsigned long createstart,createend,computestart,computeend;
     unsigned long trackstart, trackend, tracktime;
     unsigned long partitionstart, partitionend, partitiontime;
@@ -129,7 +119,7 @@ struct local_memory {
    long myselfint; 	/* count self-interactions for each processor */
    long myn2bterm; 	/* count body-body terms for a body */
    long mynbcterm; 	/* count body-cell terms for a body */
-   bool skipself; 	/* true if self-interaction skipped OK */
+   cbool skipself; 	/* true if self-interaction skipped OK */
    bodyptr pskip;       /* body to skip in force evaluation */
    vector pos0;         /* point at which to evaluate field */
    real phi0;           /* computed potential at pos0 */
@@ -163,7 +153,7 @@ void startrun(void);
 void testdata(void);
 void pickshell(real vec[], real rad);
 void find_my_initial_bodies(bodyptr btab, long nbody, long ProcessId);
-void find_my_bodies(nodeptr mycell, long work, long direction, long ProcessId);
+void find_my_bodies(cellptr mycell, long work, long direction, long ProcessId);
 void Housekeep(long ProcessId);
 void setbound(void);
 long  Log_base_2(long number);

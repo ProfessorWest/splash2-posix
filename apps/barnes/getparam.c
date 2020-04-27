@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "getparam.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -21,29 +18,23 @@
  * GETPARAM.C:
  */
 
-#line 20
 #include <pthread.h>
-#line 20
 #include <sys/time.h>
-#line 20
 #include <unistd.h>
-#line 20
 #include <stdlib.h>
-#line 20
 extern pthread_t PThreadTable[];
-#line 20
 
 #define global extern
 
 #include "stdinc.h"
 
-local string *defaults = NULL;        /* vector of "name=value" strings */
+local const char **defaults = NULL;        /* vector of "name=value" strings */
 
 /*
  * INITPARAM: ignore arg vector, remember defaults.
  */
 
-void initparam(string *defv)
+void initparam(const char **defv)
 {
    defaults = defv;
 }
@@ -52,10 +43,10 @@ void initparam(string *defv)
  * GETPARAM: export version prompts user for value.
  */
 
-string getparam(string name)
+char *getparam(const char *name)
 {
    long i, leng;
-   string def;
+   char *def;
    char buf[128];
 
    if (defaults == NULL)
@@ -64,10 +55,10 @@ string getparam(string name)
    if (i < 0)
       error("getparam: %s unknown\n", name);
    def = extrvalue(defaults[i]);
-   gets(buf);
+   fgets(buf, 128, stdin);
    leng = strlen(buf) + 1;
    if (leng > 1) {
-      return (strcpy(malloc(leng), buf));
+      return (strcpy((char*)malloc(leng), buf));
    }
    else {
       return (def);
@@ -75,31 +66,31 @@ string getparam(string name)
 }
 
 /*
- * GETIPARAM, ..., GETDPARAM: get long, long, bool, or double parameters.
+ * GETIPARAM, ..., GETDPARAM: get long, long, cbool, or double parameters.
  */
 
-long getiparam(string name)
+long getiparam(const char *name)
 {
-   string val;
+   const char *val = "";
 
-   for (val = ""; *val == '\0';) {
+   for (; *val == '\0';) {
       val = getparam(name);
    }
    return (atoi(val));
 }
 
-long getlparam(string name)
+long getlparam(const char *name)
 {
-   string val;
+   const char *val;
 
    for (val = ""; *val == '\0'; )
       val = getparam(name);
    return (atol(val));
 }
 
-bool getbparam(string name)
+cbool getbparam(const char *name)
 {
-   string val;
+   const char *val;
 
    for (val = ""; *val == '\0'; )
       val = getparam(name);
@@ -110,13 +101,14 @@ bool getbparam(string name)
       return (FALSE);
    }
    error("getbparam: %s=%s not bool\n", name, val);
+   return FALSE;
 }
 
-double getdparam(string name)
+double getdparam(const char *name)
 {
-   string val;
+   const char *val = "";
 
-   for (val = ""; *val == '\0'; ) {
+   for (; *val == '\0'; ) {
       val = getparam(name);
    }
    return (atof(val));
@@ -128,7 +120,7 @@ double getdparam(string name)
  * SCANBIND: scan binding vector for name, return index.
  */
 
-long scanbind(string bvec[], string name)
+long scanbind(const char *bvec[], const char *name)
 {
    long i;
 
@@ -142,9 +134,9 @@ long scanbind(string bvec[], string name)
  * MATCHNAME: determine if "name=value" matches "name".
  */
 
-bool matchname(string bind, string name)
+cbool matchname(const char *bind, const char *name)
 {
-   char *bp, *np;
+   const char *bp, *np;
 
    bp = bind;
    np = name;
@@ -159,14 +151,14 @@ bool matchname(string bind, string name)
  * EXTRVALUE: extract value from name=value string.
  */
 
-string extrvalue(string arg)
+char *extrvalue(const char *arg)
 {
    char *ap;
 
    ap = (char *) arg;
    while (*ap != '\0')
       if (*ap++ == '=')
-	 return ((string) ap);
+	 return ((char *) ap);
    return (NULL);
 }
 

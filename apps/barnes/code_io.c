@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "code_io.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -21,17 +18,11 @@
  * CODE_IO.C:
  */
 
-#line 20
 #include <pthread.h>
-#line 20
 #include <sys/time.h>
-#line 20
 #include <unistd.h>
-#line 20
 #include <stdlib.h>
-#line 20
 extern pthread_t PThreadTable[];
-#line 20
 
 #define global extern
 
@@ -110,7 +101,7 @@ void initoutput()
 
 void output(long ProcessId)
 {
-   long nttot, nbavg, ncavg,k;
+   long k;
    vector tempv1,tempv2;
 
    if ((Local[ProcessId].tout - 0.01 * dtime) <= Local[ProcessId].tnow) {
@@ -143,64 +134,58 @@ void output(long ProcessId)
    }
 
    {
-#line 130
+
 	unsigned long	Error, Cycle;
-#line 130
-	long		Cancel, Temp;
-#line 130
 
-#line 130
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(Global->Barrier).mutex);
-#line 130
+
 	if (Error != 0) {
-#line 130
+
 		printf("Error while trying to get lock in barrier.\n");
-#line 130
+
 		exit(-1);
-#line 130
-	}
-#line 130
 
-#line 130
+	}
+
+
+
 	Cycle = (Global->Barrier).cycle;
-#line 130
-	if (++(Global->Barrier).counter != (NPROC)) {
-#line 130
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 130
-		while (Cycle == (Global->Barrier).cycle) {
-#line 130
-			Error = pthread_cond_wait(&(Global->Barrier).cv, &(Global->Barrier).mutex);
-#line 130
-			if (Error != 0) {
-#line 130
-				break;
-#line 130
-			}
-#line 130
-		}
-#line 130
-		pthread_setcancelstate(Cancel, &Temp);
-#line 130
-	} else {
-#line 130
-		(Global->Barrier).cycle = !(Global->Barrier).cycle;
-#line 130
-		(Global->Barrier).counter = 0;
-#line 130
-		Error = pthread_cond_broadcast(&(Global->Barrier).cv);
-#line 130
-	}
-#line 130
-	pthread_mutex_unlock(&(Global->Barrier).mutex);
-#line 130
-};
 
-   if (ProcessId==0) {
-      nttot = Global->n2bcalc + Global->nbccalc;
-      nbavg = (long) ((real) Global->n2bcalc / (real) nbody);
-      ncavg = (long) ((real) Global->nbccalc / (real) nbody);
-   }
+	if (++(Global->Barrier).counter != (NPROC)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (Global->Barrier).cycle) {
+
+			Error = pthread_cond_wait(&(Global->Barrier).cv, &(Global->Barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(Global->Barrier).cycle = !(Global->Barrier).cycle;
+
+		(Global->Barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(Global->Barrier).cv);
+
+	}
+
+	pthread_mutex_unlock(&(Global->Barrier).mutex);
+
+};
 }
 
 

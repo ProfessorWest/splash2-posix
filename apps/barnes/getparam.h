@@ -1,17 +1,14 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "getparam.H"
 #ifndef _GETPARAM_H_
 #define _GETPARAM_H_
 
-void initparam(string *defv);
-string getparam(string name);
-long getiparam(string name);
-long getlparam(string name);
-bool getbparam(string name);
-double getdparam(string name);
-long scanbind(string bvec[], string name);
-bool matchname(string bind, string name);
-string extrvalue(string arg);
+void initparam(const char **defv);
+char* getparam(const char *name);
+long getiparam(const char *name);
+long getlparam(const char *name);
+cbool getbparam(const char *name);
+double getdparam(const char *name);
+long scanbind(const char *bvec[], const char *name);
+cbool matchname(const char *bind, const char *name);
+char* extrvalue(const char *arg);
 
 #endif

@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "grav.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -21,18 +18,11 @@
  * GRAV.C:
  */
 
-
-#line 21
 #include <pthread.h>
-#line 21
 #include <sys/time.h>
-#line 21
 #include <unistd.h>
-#line 21
 #include <stdlib.h>
-#line 21
 extern pthread_t PThreadTable[];
-#line 21
 
 #define global extern
 
@@ -67,7 +57,7 @@ void hackgrav(bodyptr p, long ProcessId)
  * GRAVSUB: compute a single body-body or body-cell longeraction.
  */
 
-void gravsub(register nodeptr p, long ProcessId)
+void gravsub(void *p, long ProcessId)
 {
     real drabs, phii, mor3;
     vector ai;
@@ -117,14 +107,14 @@ void hackwalk(long ProcessId)
  * WALKSUB: recursive routine to do hackwalk operation.
  */
 
-void walksub(nodeptr n, real dsq, long ProcessId)
+void walksub(void *n, real dsq, long ProcessId)
 {
    nodeptr* nn;
    leafptr l;
    bodyptr p;
    long i;
 
-   if (subdivp(n, dsq, ProcessId)) {
+   if (subdivp((nodeptr)n, dsq, ProcessId)) {
       if (Type(n) == CELL) {
 	 for (nn = Subp(n); nn < Subp(n) + NSUB; nn++) {
 	    if (*nn != NULL) {
@@ -155,7 +145,7 @@ void walksub(nodeptr n, real dsq, long ProcessId)
  * Side effects: sets  pmem,dr, and drsq.
  */
 
-bool subdivp(register nodeptr p, real dsq, long ProcessId)
+cbool subdivp(register nodeptr p, real dsq, long ProcessId)
 {
    SUBV(Local[ProcessId].dr, Pos(p), Local[ProcessId].pos0);
    DOTVP(Local[ProcessId].drsq, Local[ProcessId].dr, Local[ProcessId].dr);

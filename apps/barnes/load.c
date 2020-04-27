@@ -1,6 +1,3 @@
-#line 228 "/home/pwest/Dev/splash2/codes/null_macros/c.m4.null.POSIX"
-
-#line 1 "load.C"
 /*************************************************************************/
 /*                                                                       */
 /*  Copyright (c) 1994 Stanford University                               */
@@ -17,18 +14,11 @@
 /*                                                                       */
 /*************************************************************************/
 
-
-#line 17
 #include <pthread.h>
-#line 17
 #include <sys/time.h>
-#line 17
 #include <unistd.h>
-#line 17
 #include <stdlib.h>
-#line 17
 extern pthread_t PThreadTable[];
-#line 17
 
 #define global extern
 
@@ -64,111 +54,102 @@ void maketree(long ProcessId)
       }
    }
    {
-#line 51
 	unsigned long	Error, Cycle;
-#line 51
-	long		Cancel, Temp;
-#line 51
+	int		Cancel, Temp;
 
-#line 51
 	Error = pthread_mutex_lock(&(Global->Barrier).mutex);
-#line 51
 	if (Error != 0) {
-#line 51
 		printf("Error while trying to get lock in barrier.\n");
-#line 51
 		exit(-1);
-#line 51
 	}
-#line 51
 
-#line 51
+
 	Cycle = (Global->Barrier).cycle;
-#line 51
+
 	if (++(Global->Barrier).counter != (NPROC)) {
-#line 51
+
 		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 51
+
 		while (Cycle == (Global->Barrier).cycle) {
-#line 51
+
 			Error = pthread_cond_wait(&(Global->Barrier).cv, &(Global->Barrier).mutex);
-#line 51
+
 			if (Error != 0) {
-#line 51
+
 				break;
-#line 51
+
 			}
-#line 51
+
 		}
-#line 51
+
 		pthread_setcancelstate(Cancel, &Temp);
-#line 51
+
 	} else {
-#line 51
+
 		(Global->Barrier).cycle = !(Global->Barrier).cycle;
-#line 51
+
 		(Global->Barrier).counter = 0;
-#line 51
+
 		Error = pthread_cond_broadcast(&(Global->Barrier).cv);
-#line 51
+
 	}
-#line 51
+
 	pthread_mutex_unlock(&(Global->Barrier).mutex);
-#line 51
+
 };
    hackcofm(ProcessId );
    {
-#line 53
+
 	unsigned long	Error, Cycle;
-#line 53
-	long		Cancel, Temp;
-#line 53
 
-#line 53
+	int		Cancel, Temp;
+
+
+
 	Error = pthread_mutex_lock(&(Global->Barrier).mutex);
-#line 53
-	if (Error != 0) {
-#line 53
-		printf("Error while trying to get lock in barrier.\n");
-#line 53
-		exit(-1);
-#line 53
-	}
-#line 53
 
-#line 53
-	Cycle = (Global->Barrier).cycle;
-#line 53
-	if (++(Global->Barrier).counter != (NPROC)) {
-#line 53
-		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
-#line 53
-		while (Cycle == (Global->Barrier).cycle) {
-#line 53
-			Error = pthread_cond_wait(&(Global->Barrier).cv, &(Global->Barrier).mutex);
-#line 53
-			if (Error != 0) {
-#line 53
-				break;
-#line 53
-			}
-#line 53
-		}
-#line 53
-		pthread_setcancelstate(Cancel, &Temp);
-#line 53
-	} else {
-#line 53
-		(Global->Barrier).cycle = !(Global->Barrier).cycle;
-#line 53
-		(Global->Barrier).counter = 0;
-#line 53
-		Error = pthread_cond_broadcast(&(Global->Barrier).cv);
-#line 53
+	if (Error != 0) {
+
+		printf("Error while trying to get lock in barrier.\n");
+
+		exit(-1);
+
 	}
-#line 53
+
+
+
+	Cycle = (Global->Barrier).cycle;
+
+	if (++(Global->Barrier).counter != (NPROC)) {
+
+		pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &Cancel);
+
+		while (Cycle == (Global->Barrier).cycle) {
+
+			Error = pthread_cond_wait(&(Global->Barrier).cv, &(Global->Barrier).mutex);
+
+			if (Error != 0) {
+
+				break;
+
+			}
+
+		}
+
+		pthread_setcancelstate(Cancel, &Temp);
+
+	} else {
+
+		(Global->Barrier).cycle = !(Global->Barrier).cycle;
+
+		(Global->Barrier).counter = 0;
+
+		Error = pthread_cond_broadcast(&(Global->Barrier).cv);
+
+	}
+
 	pthread_mutex_unlock(&(Global->Barrier).mutex);
-#line 53
+
 };
 }
 
@@ -213,12 +194,10 @@ void printtree(nodeptr n)
    leafptr l;
    bodyptr p;
    nodeptr tmp;
-   long nseq;
 
    switch (Type(n)) {
     case CELL:
       c = (cellptr) n;
-      nseq = c->seqnum;
       printf("Cell : Cost = %ld, ", Cost(c));
       PRTV("Pos", Pos(n));
       printf("\n");
@@ -229,11 +208,9 @@ void printtree(nodeptr n)
 	 }
 	 else {
 	    if (Type(Subp(c)[k]) == CELL) {
-	       nseq = ((cellptr) Subp(c)[k])->seqnum;
 	       printf("C: Cost = %ld, ", Cost(Subp(c)[k]));
 	    }
 	    else {
-	       nseq = ((leafptr) Subp(c)[k])->seqnum;
 	       printf("L: # Bodies = %2ld, Cost = %ld, ",
 		      ((leafptr) Subp(c)[k])->num_bodies, Cost(Subp(c)[k]));
 	    }
@@ -250,7 +227,6 @@ void printtree(nodeptr n)
       break;
     case LEAF:
       l = (leafptr) n;
-      nseq = l->seqnum;
       printf("Leaf : # Bodies = %2ld, Cost = %ld, ", l->num_bodies, Cost(l));
       PRTV("Pos", Pos(n));
       printf("\n");
@@ -276,9 +252,10 @@ void printtree(nodeptr n)
 
 nodeptr loadtree(bodyptr p, cellptr root, long ProcessId)
 {
-   long l, xp[NDIM], xor[NDIM], flag;
+   long l, xp[NDIM], lxor[NDIM];
+   cbool flag;
    long i, j, root_level;
-   bool valid_root;
+   cbool valid_root;
    long kidIndex;
    volatile nodeptr *volatile qptr, mynode;
    leafptr le;
@@ -286,11 +263,11 @@ nodeptr loadtree(bodyptr p, cellptr root, long ProcessId)
    intcoord(xp, Pos(p));
    valid_root = TRUE;
    for (i = 0; i < NDIM; i++) {
-      xor[i] = xp[i] ^ Local[ProcessId].Root_Coords[i];
+      lxor[i] = xp[i] ^ Local[ProcessId].Root_Coords[i];
    }
    for (i = IMAX >> 1; i > Level(root); i >>= 1) {
       for (j = 0; j < NDIM; j++) {
-	 if (xor[j] & i) {
+	 if (lxor[j] & i) {
 	    valid_root = FALSE;
 	    break;
 	 }
@@ -308,7 +285,7 @@ nodeptr loadtree(bodyptr p, cellptr root, long ProcessId)
 	 valid_root = TRUE;
 	 for (i = IMAX >> 1; i > Level(root); i >>= 1) {
 	    for (j = 0; j < NDIM; j++) {
-	       if (xor[j] & i) {
+	       if (((long int)lxor[j]) & i) {
 		  valid_root = FALSE;
 		  break;
 	       }
@@ -385,10 +362,10 @@ unless rp was out of bounds.  */
 
 /* integerized coordinate vector [0,IMAX) */
 /* real coordinate vector (system coords) */
-bool intcoord(long xp[NDIM], vector rp)
+cbool intcoord(long xp[NDIM], vector rp)
 {
    long k;
-   bool inb;
+   cbool inb;
    double xsc;
 
    inb = TRUE;
